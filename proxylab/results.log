@@ -1,0 +1,29 @@
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A01-single-fetch.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A02-basic-text.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A03-basic-binary.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A04-missing-file.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A05-large-text.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A06-large-binary.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A07-multiple-request.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A08-multiple-fetch.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A09-superfetch.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A10-fetch-request1.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A11-fetch-request2.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A12-fetch-request3.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B01-sigpipe.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B02-bad-address.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B03-client-norequest.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B04-server-norequest.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B05-server-noreponse.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B06-client-noresponse.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B07-strict1.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B08-strict2.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B09-strict3.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B10-strict4.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B11-get-text.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B12-get-binary.cmd succeeded: ALL TESTS PASSED
+Test /afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B13-post-error.cmd succeeded: ALL TESTS PASSED
+Total run time = 34.86 seconds
+25 tests.  25 (100.0%) passed, 0 (0.0%) failed
+Runtime logs in directory ./logs
+ALL TESTS PASSED
