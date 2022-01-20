@@ -1,0 +1,614 @@
+; ModuleID = 'trans.c'
+source_filename = "trans.c"
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+@trans_square_desc = dso_local global [17 x i8] c"square transpose\00", align 16
+@transpose_submit_desc = internal constant [21 x i8] c"Transpose submission\00", align 16
+
+; Function Attrs: nounwind uwtable
+define dso_local void @registerFunctions() local_unnamed_addr #0 {
+  tail call void @registerTransFunction(void (i64, i64, double*, double*, double*)* nonnull @transpose_submit, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @transpose_submit_desc, i64 0, i64 0)) #3
+  tail call void @registerTransFunction(void (i64, i64, double*, double*, double*)* nonnull @transpose_square, i8* getelementptr inbounds ([17 x i8], [17 x i8]* @trans_square_desc, i64 0, i64 0)) #3
+  ret void
+}
+
+declare dso_local void @registerTransFunction(void (i64, i64, double*, double*, double*)*, i8*) local_unnamed_addr #1
+
+; Function Attrs: norecurse nounwind uwtable
+define internal void @transpose_submit(i64, i64, double* nocapture readonly, double* nocapture, double* nocapture) #2 {
+  %6 = icmp eq i64 %0, %1
+  br i1 %6, label %7, label %70
+
+; <label>:7:                                      ; preds = %5
+  switch i64 %0, label %8 [
+    i64 32, label %14
+    i64 0, label %135
+  ]
+
+; <label>:8:                                      ; preds = %7
+  %9 = add i64 %0, -1
+  %10 = and i64 %0, 3
+  %11 = icmp ult i64 %9, 3
+  %12 = sub i64 %0, %10
+  %13 = icmp eq i64 %10, 0
+  br label %15
+
+; <label>:14:                                     ; preds = %7
+  tail call void @transpose_square(i64 32, i64 32, double* %2, double* %3, double* %4)
+  br label %135
+
+; <label>:15:                                     ; preds = %8, %67
+  %16 = phi i64 [ %68, %67 ], [ 0, %8 ]
+  %17 = mul nsw i64 %16, %0
+  %18 = getelementptr inbounds double, double* %2, i64 %17
+  %19 = getelementptr inbounds double, double* %3, i64 %16
+  br i1 %11, label %53, label %20
+
+; <label>:20:                                     ; preds = %15, %20
+  %21 = phi i64 [ %50, %20 ], [ 0, %15 ]
+  %22 = phi i64 [ %51, %20 ], [ %12, %15 ]
+  %23 = getelementptr inbounds double, double* %18, i64 %21
+  %24 = bitcast double* %23 to i64*
+  %25 = load i64, i64* %24, align 8, !tbaa !2
+  %26 = mul nsw i64 %21, %0
+  %27 = getelementptr inbounds double, double* %19, i64 %26
+  %28 = bitcast double* %27 to i64*
+  store i64 %25, i64* %28, align 8, !tbaa !2
+  %29 = or i64 %21, 1
+  %30 = getelementptr inbounds double, double* %18, i64 %29
+  %31 = bitcast double* %30 to i64*
+  %32 = load i64, i64* %31, align 8, !tbaa !2
+  %33 = mul nsw i64 %29, %0
+  %34 = getelementptr inbounds double, double* %19, i64 %33
+  %35 = bitcast double* %34 to i64*
+  store i64 %32, i64* %35, align 8, !tbaa !2
+  %36 = or i64 %21, 2
+  %37 = getelementptr inbounds double, double* %18, i64 %36
+  %38 = bitcast double* %37 to i64*
+  %39 = load i64, i64* %38, align 8, !tbaa !2
+  %40 = mul nsw i64 %36, %0
+  %41 = getelementptr inbounds double, double* %19, i64 %40
+  %42 = bitcast double* %41 to i64*
+  store i64 %39, i64* %42, align 8, !tbaa !2
+  %43 = or i64 %21, 3
+  %44 = getelementptr inbounds double, double* %18, i64 %43
+  %45 = bitcast double* %44 to i64*
+  %46 = load i64, i64* %45, align 8, !tbaa !2
+  %47 = mul nsw i64 %43, %0
+  %48 = getelementptr inbounds double, double* %19, i64 %47
+  %49 = bitcast double* %48 to i64*
+  store i64 %46, i64* %49, align 8, !tbaa !2
+  %50 = add i64 %21, 4
+  %51 = add i64 %22, -4
+  %52 = icmp eq i64 %51, 0
+  br i1 %52, label %53, label %20
+
+; <label>:53:                                     ; preds = %20, %15
+  %54 = phi i64 [ 0, %15 ], [ %50, %20 ]
+  br i1 %13, label %67, label %55
+
+; <label>:55:                                     ; preds = %53, %55
+  %56 = phi i64 [ %64, %55 ], [ %54, %53 ]
+  %57 = phi i64 [ %65, %55 ], [ %10, %53 ]
+  %58 = getelementptr inbounds double, double* %18, i64 %56
+  %59 = bitcast double* %58 to i64*
+  %60 = load i64, i64* %59, align 8, !tbaa !2
+  %61 = mul nsw i64 %56, %0
+  %62 = getelementptr inbounds double, double* %19, i64 %61
+  %63 = bitcast double* %62 to i64*
+  store i64 %60, i64* %63, align 8, !tbaa !2
+  %64 = add nuw i64 %56, 1
+  %65 = add i64 %57, -1
+  %66 = icmp eq i64 %65, 0
+  br i1 %66, label %67, label %55, !llvm.loop !6
+
+; <label>:67:                                     ; preds = %55, %53
+  %68 = add nuw i64 %16, 1
+  %69 = icmp eq i64 %68, %0
+  br i1 %69, label %135, label %15
+
+; <label>:70:                                     ; preds = %5
+  %71 = icmp eq i64 %1, 0
+  %72 = icmp eq i64 %0, 0
+  %73 = or i1 %72, %71
+  br i1 %73, label %135, label %74
+
+; <label>:74:                                     ; preds = %70
+  %75 = add i64 %0, -1
+  %76 = and i64 %0, 3
+  %77 = icmp ult i64 %75, 3
+  %78 = sub i64 %0, %76
+  %79 = icmp eq i64 %76, 0
+  br label %80
+
+; <label>:80:                                     ; preds = %74, %132
+  %81 = phi i64 [ %133, %132 ], [ 0, %74 ]
+  %82 = mul nsw i64 %81, %0
+  %83 = getelementptr inbounds double, double* %2, i64 %82
+  %84 = getelementptr inbounds double, double* %3, i64 %81
+  br i1 %77, label %118, label %85
+
+; <label>:85:                                     ; preds = %80, %85
+  %86 = phi i64 [ %115, %85 ], [ 0, %80 ]
+  %87 = phi i64 [ %116, %85 ], [ %78, %80 ]
+  %88 = getelementptr inbounds double, double* %83, i64 %86
+  %89 = bitcast double* %88 to i64*
+  %90 = load i64, i64* %89, align 8, !tbaa !2
+  %91 = mul nsw i64 %86, %1
+  %92 = getelementptr inbounds double, double* %84, i64 %91
+  %93 = bitcast double* %92 to i64*
+  store i64 %90, i64* %93, align 8, !tbaa !2
+  %94 = or i64 %86, 1
+  %95 = getelementptr inbounds double, double* %83, i64 %94
+  %96 = bitcast double* %95 to i64*
+  %97 = load i64, i64* %96, align 8, !tbaa !2
+  %98 = mul nsw i64 %94, %1
+  %99 = getelementptr inbounds double, double* %84, i64 %98
+  %100 = bitcast double* %99 to i64*
+  store i64 %97, i64* %100, align 8, !tbaa !2
+  %101 = or i64 %86, 2
+  %102 = getelementptr inbounds double, double* %83, i64 %101
+  %103 = bitcast double* %102 to i64*
+  %104 = load i64, i64* %103, align 8, !tbaa !2
+  %105 = mul nsw i64 %101, %1
+  %106 = getelementptr inbounds double, double* %84, i64 %105
+  %107 = bitcast double* %106 to i64*
+  store i64 %104, i64* %107, align 8, !tbaa !2
+  %108 = or i64 %86, 3
+  %109 = getelementptr inbounds double, double* %83, i64 %108
+  %110 = bitcast double* %109 to i64*
+  %111 = load i64, i64* %110, align 8, !tbaa !2
+  %112 = mul nsw i64 %108, %1
+  %113 = getelementptr inbounds double, double* %84, i64 %112
+  %114 = bitcast double* %113 to i64*
+  store i64 %111, i64* %114, align 8, !tbaa !2
+  %115 = add i64 %86, 4
+  %116 = add i64 %87, -4
+  %117 = icmp eq i64 %116, 0
+  br i1 %117, label %118, label %85
+
+; <label>:118:                                    ; preds = %85, %80
+  %119 = phi i64 [ 0, %80 ], [ %115, %85 ]
+  br i1 %79, label %132, label %120
+
+; <label>:120:                                    ; preds = %118, %120
+  %121 = phi i64 [ %129, %120 ], [ %119, %118 ]
+  %122 = phi i64 [ %130, %120 ], [ %76, %118 ]
+  %123 = getelementptr inbounds double, double* %83, i64 %121
+  %124 = bitcast double* %123 to i64*
+  %125 = load i64, i64* %124, align 8, !tbaa !2
+  %126 = mul nsw i64 %121, %1
+  %127 = getelementptr inbounds double, double* %84, i64 %126
+  %128 = bitcast double* %127 to i64*
+  store i64 %125, i64* %128, align 8, !tbaa !2
+  %129 = add nuw i64 %121, 1
+  %130 = add i64 %122, -1
+  %131 = icmp eq i64 %130, 0
+  br i1 %131, label %132, label %120, !llvm.loop !8
+
+; <label>:132:                                    ; preds = %120, %118
+  %133 = add nuw i64 %81, 1
+  %134 = icmp eq i64 %133, %1
+  br i1 %134, label %135, label %80
+
+; <label>:135:                                    ; preds = %132, %67, %7, %70, %14
+  ret void
+}
+
+; Function Attrs: norecurse nounwind uwtable
+define internal void @transpose_square(i64, i64, double* nocapture readonly, double* nocapture, double* nocapture) #2 {
+  %6 = icmp eq i64 %1, 0
+  br i1 %6, label %104, label %7
+
+; <label>:7:                                      ; preds = %5
+  %8 = icmp eq i64 %0, 0
+  %9 = bitcast double* %4 to i64*
+  br i1 %8, label %104, label %10
+
+; <label>:10:                                     ; preds = %7, %100
+  %11 = phi i64 [ %103, %100 ], [ 8, %7 ]
+  %12 = phi i64 [ %101, %100 ], [ 0, %7 ]
+  %13 = or i64 %12, 1
+  %14 = mul nsw i64 %12, %1
+  %15 = add nuw nsw i64 %13, 1
+  %16 = mul nsw i64 %13, %1
+  %17 = or i64 %12, 3
+  %18 = mul nsw i64 %15, %1
+  %19 = add nuw nsw i64 %17, 1
+  %20 = mul nsw i64 %17, %1
+  %21 = add nsw i64 %17, 2
+  %22 = mul nsw i64 %19, %1
+  %23 = add nsw i64 %17, 3
+  %24 = mul nsw i64 %21, %1
+  %25 = or i64 %12, 7
+  %26 = mul nsw i64 %23, %1
+  %27 = mul nsw i64 %25, %1
+  %28 = getelementptr inbounds double, double* %3, i64 %14
+  %29 = getelementptr inbounds double, double* %3, i64 %16
+  %30 = getelementptr inbounds double, double* %3, i64 %18
+  %31 = getelementptr inbounds double, double* %3, i64 %20
+  %32 = getelementptr inbounds double, double* %3, i64 %22
+  %33 = getelementptr inbounds double, double* %3, i64 %24
+  %34 = getelementptr inbounds double, double* %3, i64 %26
+  %35 = getelementptr inbounds double, double* %3, i64 %27
+  br label %56
+
+; <label>:36:                                     ; preds = %173, %245
+  %37 = add nuw i64 %57, 8
+  %38 = icmp ult i64 %37, %0
+  br i1 %38, label %56, label %100
+
+; <label>:39:                                     ; preds = %49
+  %40 = getelementptr inbounds double, double* %52, i64 %57
+  %41 = bitcast double* %40 to i64*
+  %42 = load i64, i64* %41, align 8, !tbaa !2
+  %43 = getelementptr inbounds double, double* %75, i64 %50
+  %44 = bitcast double* %43 to i64*
+  store i64 %42, i64* %44, align 8, !tbaa !2
+  br label %47
+
+; <label>:45:                                     ; preds = %49
+  %46 = load i64, i64* %54, align 8, !tbaa !2
+  store i64 %46, i64* %9, align 8, !tbaa !2
+  br label %47
+
+; <label>:47:                                     ; preds = %45, %39
+  %48 = icmp eq i64 %50, %60
+  br i1 %48, label %111, label %105
+
+; <label>:49:                                     ; preds = %173, %59
+  %50 = phi i64 [ %12, %59 ], [ %174, %173 ]
+  %51 = mul nsw i64 %50, %0
+  %52 = getelementptr inbounds double, double* %2, i64 %51
+  %53 = getelementptr inbounds double, double* %52, i64 %50
+  %54 = bitcast double* %53 to i64*
+  %55 = icmp eq i64 %50, %57
+  br i1 %55, label %45, label %39
+
+; <label>:56:                                     ; preds = %10, %36
+  %57 = phi i64 [ 0, %10 ], [ %37, %36 ]
+  %58 = icmp eq i64 %12, %57
+  br i1 %58, label %83, label %59
+
+; <label>:59:                                     ; preds = %56
+  %60 = or i64 %57, 1
+  %61 = mul nsw i64 %57, %1
+  %62 = add nuw nsw i64 %60, 1
+  %63 = mul nsw i64 %60, %1
+  %64 = or i64 %57, 3
+  %65 = mul nsw i64 %62, %1
+  %66 = add nuw nsw i64 %64, 1
+  %67 = mul nsw i64 %64, %1
+  %68 = add nsw i64 %64, 2
+  %69 = mul nsw i64 %66, %1
+  %70 = add nsw i64 %64, 3
+  %71 = mul nsw i64 %68, %1
+  %72 = or i64 %57, 7
+  %73 = mul nsw i64 %70, %1
+  %74 = mul nsw i64 %72, %1
+  %75 = getelementptr inbounds double, double* %3, i64 %61
+  %76 = getelementptr inbounds double, double* %3, i64 %63
+  %77 = getelementptr inbounds double, double* %3, i64 %65
+  %78 = getelementptr inbounds double, double* %3, i64 %67
+  %79 = getelementptr inbounds double, double* %3, i64 %69
+  %80 = getelementptr inbounds double, double* %3, i64 %71
+  %81 = getelementptr inbounds double, double* %3, i64 %73
+  %82 = getelementptr inbounds double, double* %3, i64 %74
+  br label %49
+
+; <label>:83:                                     ; preds = %56, %245
+  %84 = phi i64 [ %251, %245 ], [ %12, %56 ]
+  %85 = mul nsw i64 %84, %0
+  %86 = getelementptr inbounds double, double* %2, i64 %85
+  %87 = getelementptr inbounds double, double* %86, i64 %84
+  %88 = bitcast double* %87 to i64*
+  %89 = icmp eq i64 %84, %12
+  br i1 %89, label %96, label %90
+
+; <label>:90:                                     ; preds = %83
+  %91 = getelementptr inbounds double, double* %86, i64 %12
+  %92 = bitcast double* %91 to i64*
+  %93 = load i64, i64* %92, align 8, !tbaa !2
+  %94 = getelementptr inbounds double, double* %28, i64 %84
+  %95 = bitcast double* %94 to i64*
+  store i64 %93, i64* %95, align 8, !tbaa !2
+  br label %98
+
+; <label>:96:                                     ; preds = %83
+  %97 = load i64, i64* %88, align 8, !tbaa !2
+  store i64 %97, i64* %9, align 8, !tbaa !2
+  br label %98
+
+; <label>:98:                                     ; preds = %96, %90
+  %99 = icmp eq i64 %84, %13
+  br i1 %99, label %182, label %176
+
+; <label>:100:                                    ; preds = %36
+  %101 = add nuw i64 %12, 8
+  %102 = icmp ult i64 %101, %1
+  %103 = add i64 %11, 8
+  br i1 %102, label %10, label %104
+
+; <label>:104:                                    ; preds = %100, %7, %5
+  ret void
+
+; <label>:105:                                    ; preds = %47
+  %106 = getelementptr inbounds double, double* %52, i64 %60
+  %107 = bitcast double* %106 to i64*
+  %108 = load i64, i64* %107, align 8, !tbaa !2
+  %109 = getelementptr inbounds double, double* %76, i64 %50
+  %110 = bitcast double* %109 to i64*
+  store i64 %108, i64* %110, align 8, !tbaa !2
+  br label %113
+
+; <label>:111:                                    ; preds = %47
+  %112 = load i64, i64* %54, align 8, !tbaa !2
+  store i64 %112, i64* %9, align 8, !tbaa !2
+  br label %113
+
+; <label>:113:                                    ; preds = %111, %105
+  %114 = icmp eq i64 %50, %62
+  br i1 %114, label %121, label %115
+
+; <label>:115:                                    ; preds = %113
+  %116 = getelementptr inbounds double, double* %52, i64 %62
+  %117 = bitcast double* %116 to i64*
+  %118 = load i64, i64* %117, align 8, !tbaa !2
+  %119 = getelementptr inbounds double, double* %77, i64 %50
+  %120 = bitcast double* %119 to i64*
+  store i64 %118, i64* %120, align 8, !tbaa !2
+  br label %123
+
+; <label>:121:                                    ; preds = %113
+  %122 = load i64, i64* %54, align 8, !tbaa !2
+  store i64 %122, i64* %9, align 8, !tbaa !2
+  br label %123
+
+; <label>:123:                                    ; preds = %121, %115
+  %124 = icmp eq i64 %50, %64
+  br i1 %124, label %131, label %125
+
+; <label>:125:                                    ; preds = %123
+  %126 = getelementptr inbounds double, double* %52, i64 %64
+  %127 = bitcast double* %126 to i64*
+  %128 = load i64, i64* %127, align 8, !tbaa !2
+  %129 = getelementptr inbounds double, double* %78, i64 %50
+  %130 = bitcast double* %129 to i64*
+  store i64 %128, i64* %130, align 8, !tbaa !2
+  br label %133
+
+; <label>:131:                                    ; preds = %123
+  %132 = load i64, i64* %54, align 8, !tbaa !2
+  store i64 %132, i64* %9, align 8, !tbaa !2
+  br label %133
+
+; <label>:133:                                    ; preds = %131, %125
+  %134 = icmp eq i64 %50, %66
+  br i1 %134, label %141, label %135
+
+; <label>:135:                                    ; preds = %133
+  %136 = getelementptr inbounds double, double* %52, i64 %66
+  %137 = bitcast double* %136 to i64*
+  %138 = load i64, i64* %137, align 8, !tbaa !2
+  %139 = getelementptr inbounds double, double* %79, i64 %50
+  %140 = bitcast double* %139 to i64*
+  store i64 %138, i64* %140, align 8, !tbaa !2
+  br label %143
+
+; <label>:141:                                    ; preds = %133
+  %142 = load i64, i64* %54, align 8, !tbaa !2
+  store i64 %142, i64* %9, align 8, !tbaa !2
+  br label %143
+
+; <label>:143:                                    ; preds = %141, %135
+  %144 = icmp eq i64 %50, %68
+  br i1 %144, label %151, label %145
+
+; <label>:145:                                    ; preds = %143
+  %146 = getelementptr inbounds double, double* %52, i64 %68
+  %147 = bitcast double* %146 to i64*
+  %148 = load i64, i64* %147, align 8, !tbaa !2
+  %149 = getelementptr inbounds double, double* %80, i64 %50
+  %150 = bitcast double* %149 to i64*
+  store i64 %148, i64* %150, align 8, !tbaa !2
+  br label %153
+
+; <label>:151:                                    ; preds = %143
+  %152 = load i64, i64* %54, align 8, !tbaa !2
+  store i64 %152, i64* %9, align 8, !tbaa !2
+  br label %153
+
+; <label>:153:                                    ; preds = %151, %145
+  %154 = icmp eq i64 %50, %70
+  br i1 %154, label %161, label %155
+
+; <label>:155:                                    ; preds = %153
+  %156 = getelementptr inbounds double, double* %52, i64 %70
+  %157 = bitcast double* %156 to i64*
+  %158 = load i64, i64* %157, align 8, !tbaa !2
+  %159 = getelementptr inbounds double, double* %81, i64 %50
+  %160 = bitcast double* %159 to i64*
+  store i64 %158, i64* %160, align 8, !tbaa !2
+  br label %163
+
+; <label>:161:                                    ; preds = %153
+  %162 = load i64, i64* %54, align 8, !tbaa !2
+  store i64 %162, i64* %9, align 8, !tbaa !2
+  br label %163
+
+; <label>:163:                                    ; preds = %161, %155
+  %164 = icmp eq i64 %50, %72
+  br i1 %164, label %171, label %165
+
+; <label>:165:                                    ; preds = %163
+  %166 = getelementptr inbounds double, double* %52, i64 %72
+  %167 = bitcast double* %166 to i64*
+  %168 = load i64, i64* %167, align 8, !tbaa !2
+  %169 = getelementptr inbounds double, double* %82, i64 %50
+  %170 = bitcast double* %169 to i64*
+  store i64 %168, i64* %170, align 8, !tbaa !2
+  br label %173
+
+; <label>:171:                                    ; preds = %163
+  %172 = load i64, i64* %54, align 8, !tbaa !2
+  store i64 %172, i64* %9, align 8, !tbaa !2
+  br label %173
+
+; <label>:173:                                    ; preds = %171, %165
+  %174 = add nuw i64 %50, 1
+  %175 = icmp eq i64 %174, %11
+  br i1 %175, label %36, label %49
+
+; <label>:176:                                    ; preds = %98
+  %177 = getelementptr inbounds double, double* %86, i64 %13
+  %178 = bitcast double* %177 to i64*
+  %179 = load i64, i64* %178, align 8, !tbaa !2
+  %180 = getelementptr inbounds double, double* %29, i64 %84
+  %181 = bitcast double* %180 to i64*
+  store i64 %179, i64* %181, align 8, !tbaa !2
+  br label %184
+
+; <label>:182:                                    ; preds = %98
+  %183 = load i64, i64* %88, align 8, !tbaa !2
+  store i64 %183, i64* %9, align 8, !tbaa !2
+  br label %184
+
+; <label>:184:                                    ; preds = %182, %176
+  %185 = icmp eq i64 %84, %15
+  br i1 %185, label %192, label %186
+
+; <label>:186:                                    ; preds = %184
+  %187 = getelementptr inbounds double, double* %86, i64 %15
+  %188 = bitcast double* %187 to i64*
+  %189 = load i64, i64* %188, align 8, !tbaa !2
+  %190 = getelementptr inbounds double, double* %30, i64 %84
+  %191 = bitcast double* %190 to i64*
+  store i64 %189, i64* %191, align 8, !tbaa !2
+  br label %194
+
+; <label>:192:                                    ; preds = %184
+  %193 = load i64, i64* %88, align 8, !tbaa !2
+  store i64 %193, i64* %9, align 8, !tbaa !2
+  br label %194
+
+; <label>:194:                                    ; preds = %192, %186
+  %195 = icmp eq i64 %84, %17
+  br i1 %195, label %202, label %196
+
+; <label>:196:                                    ; preds = %194
+  %197 = getelementptr inbounds double, double* %86, i64 %17
+  %198 = bitcast double* %197 to i64*
+  %199 = load i64, i64* %198, align 8, !tbaa !2
+  %200 = getelementptr inbounds double, double* %31, i64 %84
+  %201 = bitcast double* %200 to i64*
+  store i64 %199, i64* %201, align 8, !tbaa !2
+  br label %204
+
+; <label>:202:                                    ; preds = %194
+  %203 = load i64, i64* %88, align 8, !tbaa !2
+  store i64 %203, i64* %9, align 8, !tbaa !2
+  br label %204
+
+; <label>:204:                                    ; preds = %202, %196
+  %205 = icmp eq i64 %84, %19
+  br i1 %205, label %212, label %206
+
+; <label>:206:                                    ; preds = %204
+  %207 = getelementptr inbounds double, double* %86, i64 %19
+  %208 = bitcast double* %207 to i64*
+  %209 = load i64, i64* %208, align 8, !tbaa !2
+  %210 = getelementptr inbounds double, double* %32, i64 %84
+  %211 = bitcast double* %210 to i64*
+  store i64 %209, i64* %211, align 8, !tbaa !2
+  br label %214
+
+; <label>:212:                                    ; preds = %204
+  %213 = load i64, i64* %88, align 8, !tbaa !2
+  store i64 %213, i64* %9, align 8, !tbaa !2
+  br label %214
+
+; <label>:214:                                    ; preds = %212, %206
+  %215 = icmp eq i64 %84, %21
+  br i1 %215, label %222, label %216
+
+; <label>:216:                                    ; preds = %214
+  %217 = getelementptr inbounds double, double* %86, i64 %21
+  %218 = bitcast double* %217 to i64*
+  %219 = load i64, i64* %218, align 8, !tbaa !2
+  %220 = getelementptr inbounds double, double* %33, i64 %84
+  %221 = bitcast double* %220 to i64*
+  store i64 %219, i64* %221, align 8, !tbaa !2
+  br label %224
+
+; <label>:222:                                    ; preds = %214
+  %223 = load i64, i64* %88, align 8, !tbaa !2
+  store i64 %223, i64* %9, align 8, !tbaa !2
+  br label %224
+
+; <label>:224:                                    ; preds = %222, %216
+  %225 = icmp eq i64 %84, %23
+  br i1 %225, label %232, label %226
+
+; <label>:226:                                    ; preds = %224
+  %227 = getelementptr inbounds double, double* %86, i64 %23
+  %228 = bitcast double* %227 to i64*
+  %229 = load i64, i64* %228, align 8, !tbaa !2
+  %230 = getelementptr inbounds double, double* %34, i64 %84
+  %231 = bitcast double* %230 to i64*
+  store i64 %229, i64* %231, align 8, !tbaa !2
+  br label %234
+
+; <label>:232:                                    ; preds = %224
+  %233 = load i64, i64* %88, align 8, !tbaa !2
+  store i64 %233, i64* %9, align 8, !tbaa !2
+  br label %234
+
+; <label>:234:                                    ; preds = %232, %226
+  %235 = icmp eq i64 %84, %25
+  br i1 %235, label %243, label %236
+
+; <label>:236:                                    ; preds = %234
+  %237 = getelementptr inbounds double, double* %86, i64 %25
+  %238 = bitcast double* %237 to i64*
+  %239 = load i64, i64* %238, align 8, !tbaa !2
+  %240 = getelementptr inbounds double, double* %35, i64 %84
+  %241 = bitcast double* %240 to i64*
+  store i64 %239, i64* %241, align 8, !tbaa !2
+  %242 = load i64, i64* %9, align 8, !tbaa !2
+  br label %245
+
+; <label>:243:                                    ; preds = %234
+  %244 = load i64, i64* %88, align 8, !tbaa !2
+  store i64 %244, i64* %9, align 8, !tbaa !2
+  br label %245
+
+; <label>:245:                                    ; preds = %243, %236
+  %246 = phi i64 [ %244, %243 ], [ %242, %236 ]
+  %247 = mul nsw i64 %84, %1
+  %248 = getelementptr inbounds double, double* %3, i64 %247
+  %249 = getelementptr inbounds double, double* %248, i64 %84
+  %250 = bitcast double* %249 to i64*
+  store i64 %246, i64* %250, align 8, !tbaa !2
+  %251 = add nuw i64 %84, 1
+  %252 = icmp eq i64 %251, %11
+  br i1 %252, label %36, label %83
+}
+
+attributes #0 = { nounwind uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #2 = { norecurse nounwind uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { nounwind }
+
+!llvm.module.flags = !{!0}
+!llvm.ident = !{!1}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{!"clang version 7.0.0 (tags/RELEASE_700/final)"}
+!2 = !{!3, !3, i64 0}
+!3 = !{!"double", !4, i64 0}
+!4 = !{!"omnipotent char", !5, i64 0}
+!5 = !{!"Simple C/C++ TBAA"}
+!6 = distinct !{!6, !7}
+!7 = !{!"llvm.loop.unroll.disable"}
+!8 = distinct !{!8, !7}
