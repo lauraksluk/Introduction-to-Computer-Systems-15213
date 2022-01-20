@@ -1,0 +1,137 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:6852
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B09-strict3.cmd'
+># Test ability to handle combination of fetches and requests with
+># strictness level 3:  Check for headers used by PxyDrive
+>option strict 3
+>serve s1 s2 s3
+Server s1 running at lemonshark.ics.cs.cmu.edu:6847
+Server s2 running at lemonshark.ics.cs.cmu.edu:27439
+Server s3 running at lemonshark.ics.cs.cmu.edu:31138
+>generate random-text1.txt 2K 
+>generate random-text2.txt 4K 
+>generate random-text3.txt 6K
+>generate random-text4.txt 8K
+>generate random-text5.txt 10K
+>generate random-text6.txt 12K
+># A sequential proxy can handle this ordering
+># of requests, fetches, and responses.
+>request r1 random-text1.txt s2
+Client: Requesting '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:27439
+>fetch f1 random-text1.txt s1
+Client: Fetching '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:6847
+>request r2 random-text2.txt s3
+Client: Requesting '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:31138
+>fetch f2 random-text2.txt s2
+Client: Fetching '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:27439
+>request r3 random-text3.txt s1
+Client: Requesting '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:6847
+>fetch f3 random-text3.txt s3
+Client: Fetching '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:31138
+>request r4 random-text4.txt s1
+Client: Requesting '/random-text4.txt' from lemonshark.ics.cs.cmu.edu:6847
+>fetch f4 random-text4.txt s3
+Client: Fetching '/random-text4.txt' from lemonshark.ics.cs.cmu.edu:31138
+>request r5 random-text5.txt s3
+Client: Requesting '/random-text5.txt' from lemonshark.ics.cs.cmu.edu:31138
+>fetch f5 random-text5.txt s2
+Client: Fetching '/random-text5.txt' from lemonshark.ics.cs.cmu.edu:27439
+>request r6 random-text6.txt s2
+Client: Requesting '/random-text6.txt' from lemonshark.ics.cs.cmu.edu:27439
+>fetch f6 random-text6.txt s1
+Client: Fetching '/random-text6.txt' from lemonshark.ics.cs.cmu.edu:6847
+>wait r1
+>respond r1
+Server responded to request r1 with status ok
+>wait r1 f1 r2
+>check r1
+Request r1 yielded expected status 'ok'
+>trace r1
+== Trace of request r1 =========================================================
+Initial request by client had header:
+GET http://lemonshark.ics.cs.cmu.edu:27439/random-text1.txt HTTP/1.0\r\n
+Host: lemonshark.ics.cs.cmu.edu:27439\r\n
+Request-ID: r1\r\n
+Response: Deferred\r\n
+Connection: close\r\n
+Proxy-Connection: close \r\n
+User-Agent: CMU/1.0 Iguana/20180704 PxyDrive/0.0.1\r\n
+\r\n
+--------------------------------------------------------------------------------
+Message received by server had header:
+GET /random-text1.txt HTTP/1.0\r\n
+Host: lemonshark.ics.cs.cmu.edu:27439\r\n
+Request-ID: r1\r\n
+Response: Deferred\r\n
+Connection: close\r\n
+Proxy-Connection: close\r\n
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1\r\n
+\r\n
+--------------------------------------------------------------------------------
+Message sent by server had header:
+HTTP/1.0 200 OK\r\n
+Server: Proxylab driver\r\n
+Request-ID: r1\r\n
+Content-length: 2000\r\n
+Content-type: text/plain\r\n
+Content-Identifier: s2-/random-text1.txt\r\n
+Sequence-Identifier: 2\r\n
+\r\n
+--------------------------------------------------------------------------------
+Message received by client had header:
+HTTP/1.0 200 OK
+Server: Proxylab driver\r\n
+Request-ID: r1\r\n
+Content-length: 2000\r\n
+Content-type: text/plain\r\n
+Content-Identifier: s2-/random-text1.txt\r\n
+Sequence-Identifier: 2\r\n
+\r\n
+--------------------------------------------------------------------------------
+Response status: ok
+  Source file in ./source_files/random/random-text1.txt
+Request status:  ok (OK)
+  Result file in ./response_files/r1-random-text1.txt
+>check f1
+Request f1 yielded expected status 'ok'
+>respond r2
+Server responded to request r2 with status ok
+>wait r2 f2 r3
+>check r2
+Request r2 yielded expected status 'ok'
+>check f2
+Request f2 yielded expected status 'ok'
+>respond r3
+Server responded to request r3 with status ok
+>wait r3 f3 r4
+>check r3
+Request r3 yielded expected status 'ok'
+>check f3
+Request f3 yielded expected status 'ok'
+>respond r4
+Server responded to request r4 with status ok
+>wait r4 f4 r5
+>check r4
+Request r4 yielded expected status 'ok'
+>check f4
+Request f4 yielded expected status 'ok'
+>respond r5
+Server responded to request r5 with status ok
+>wait r5 f5 r6
+>check r5
+Request r5 yielded expected status 'ok'
+>check f5
+Request f5 yielded expected status 'ok'
+>respond r6
+Server responded to request r6 with status ok
+>wait r6 f6
+>check r6
+Request r6 yielded expected status 'ok'
+>check f6
+Request f6 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.36 seconds
+ALL TESTS PASSED

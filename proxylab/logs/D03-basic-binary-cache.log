@@ -1,0 +1,35 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:31320
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/D03-basic-binary-cache.cmd'
+># Test ability to retrieve binary file from cache
+># This test can be passed by a sequential proxy
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:24932
+>generate random-binary1.bin 10K
+>generate random-binary2.bin 10K
+># Cache must be able to hold binary data
+>request r1a random-binary1.bin s1
+Client: Requesting '/random-binary1.bin' from lemonshark.ics.cs.cmu.edu:24932
+>wait *
+>respond r1a
+Server responded to request r1a with status ok
+>wait *
+>check r1a
+Request r1a yielded expected status 'ok'
+>fetch f2 random-binary2.bin s1
+Client: Fetching '/random-binary2.bin' from lemonshark.ics.cs.cmu.edu:24932
+>wait *
+>check f2
+Request f2 yielded expected status 'ok'
+># This request should be serviced directly by proxy
+>request r1b random-binary1.bin s1
+Client: Requesting '/random-binary1.bin' from lemonshark.ics.cs.cmu.edu:24932
+>wait *
+>check r1b
+Request r1b yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.34 seconds
+ALL TESTS PASSED

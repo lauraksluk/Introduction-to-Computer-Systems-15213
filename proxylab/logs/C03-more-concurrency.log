@@ -1,0 +1,61 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:3751
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/C03-more-concurrency.cmd'
+># Test ability to handle multiple out-of-order requests
+>serve s1 s2 s3
+Server s1 running at lemonshark.ics.cs.cmu.edu:20446
+Server s2 running at lemonshark.ics.cs.cmu.edu:6843
+Server s3 running at lemonshark.ics.cs.cmu.edu:23251
+>generate random-text1.txt 2K 
+>generate random-text2.txt 4K 
+>generate random-text3.txt 6K
+>generate random-text4.txt 8K
+>generate random-text5.txt 10K
+>generate random-text6.txt 12K
+>request r1 random-text1.txt s1
+Client: Requesting '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:20446
+>request r2 random-text2.txt s2
+Client: Requesting '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:6843
+>request r3 random-text3.txt s3
+Client: Requesting '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:23251
+>request r4 random-text4.txt s3
+Client: Requesting '/random-text4.txt' from lemonshark.ics.cs.cmu.edu:23251
+>request r5 random-text5.txt s2
+Client: Requesting '/random-text5.txt' from lemonshark.ics.cs.cmu.edu:6843
+>request r6 random-text6.txt s1
+Client: Requesting '/random-text6.txt' from lemonshark.ics.cs.cmu.edu:20446
+># Respond to requests out of order
+>wait *
+>respond r6
+Server responded to request r6 with status ok
+>respond r5
+Server responded to request r5 with status ok
+>wait *
+>check r5
+Request r5 yielded expected status 'ok'
+>check r6
+Request r6 yielded expected status 'ok'
+>respond r4
+Server responded to request r4 with status ok
+>respond r2
+Server responded to request r2 with status ok
+>wait *
+>check r2
+Request r2 yielded expected status 'ok'
+>check r4
+Request r4 yielded expected status 'ok'
+>respond r1
+Server responded to request r1 with status ok
+>respond r3
+Server responded to request r3 with status ok
+>wait *
+>check r3
+Request r3 yielded expected status 'ok'
+>check r1
+Request r1 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.59 seconds
+ALL TESTS PASSED

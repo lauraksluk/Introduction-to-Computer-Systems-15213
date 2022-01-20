@@ -1,0 +1,486 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:26879
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/D17-stress.cmd'
+>option timeout 20000
+>option error 1
+>option linefeed 0
+># Stress proxy with lots of concurrent activity
+>serve s0 s1 s2 s3 s4
+Server s0 running at lemonshark.ics.cs.cmu.edu:25636
+Server s1 running at lemonshark.ics.cs.cmu.edu:8455
+Server s2 running at lemonshark.ics.cs.cmu.edu:30474
+Server s3 running at lemonshark.ics.cs.cmu.edu:22061
+Server s4 running at lemonshark.ics.cs.cmu.edu:2011
+>serve s10
+Server s10 running at lemonshark.ics.cs.cmu.edu:18829
+>generate random-binary00.bin  33K
+>generate random-binary01.bin  50K
+>generate random-binary02.bin  66K
+>generate random-binary03.bin  50K
+>generate random-binary04.bin  50K
+>generate random-binary05.bin  50K
+>generate random-binary06.bin  66K
+>generate random-binary07.bin 100K
+>generate random-binary08.bin 100K
+>generate random-binary09.bin 100K
+>generate random-binary10.bin 100K
+>generate random-binary11.bin  66K
+>generate random-binary12.bin  50K
+>generate random-binary13.bin  33K
+>generate random-binary14.bin  20K
+># Move data
+>fetch fc00a random-binary00.bin s0
+Client: Fetching '/random-binary00.bin' from lemonshark.ics.cs.cmu.edu:25636
+>fetch fc01a random-binary01.bin s1
+Client: Fetching '/random-binary01.bin' from lemonshark.ics.cs.cmu.edu:8455
+>fetch fc02a random-binary02.bin s2
+Client: Fetching '/random-binary02.bin' from lemonshark.ics.cs.cmu.edu:30474
+>fetch fc03a random-binary03.bin s3
+Client: Fetching '/random-binary03.bin' from lemonshark.ics.cs.cmu.edu:22061
+>fetch fc04a random-binary04.bin s4
+Client: Fetching '/random-binary04.bin' from lemonshark.ics.cs.cmu.edu:2011
+>fetch fs00a random-binary00.bin s10
+Client: Fetching '/random-binary00.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs01a random-binary01.bin s10
+Client: Fetching '/random-binary01.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs02a random-binary02.bin s10
+Client: Fetching '/random-binary02.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs03a random-binary03.bin s10
+Client: Fetching '/random-binary03.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs04a random-binary04.bin s10
+Client: Fetching '/random-binary04.bin' from lemonshark.ics.cs.cmu.edu:18829
+># Make 10 requests, but defer responses
+>request rc05a random-binary05.bin s0
+Client: Requesting '/random-binary05.bin' from lemonshark.ics.cs.cmu.edu:25636
+>request rc06a random-binary06.bin s1
+Client: Requesting '/random-binary06.bin' from lemonshark.ics.cs.cmu.edu:8455
+>request rc07a random-binary07.bin s2
+Client: Requesting '/random-binary07.bin' from lemonshark.ics.cs.cmu.edu:30474
+>request rc08a random-binary08.bin s3
+Client: Requesting '/random-binary08.bin' from lemonshark.ics.cs.cmu.edu:22061
+>request rc09a random-binary09.bin s4
+Client: Requesting '/random-binary09.bin' from lemonshark.ics.cs.cmu.edu:2011
+>request rs05a random-binary05.bin s10
+Client: Requesting '/random-binary05.bin' from lemonshark.ics.cs.cmu.edu:18829
+>request rs06a random-binary06.bin s10
+Client: Requesting '/random-binary06.bin' from lemonshark.ics.cs.cmu.edu:18829
+>request rs07a random-binary07.bin s10
+Client: Requesting '/random-binary07.bin' from lemonshark.ics.cs.cmu.edu:18829
+>request rs08a random-binary08.bin s10
+Client: Requesting '/random-binary08.bin' from lemonshark.ics.cs.cmu.edu:18829
+>request rs09a random-binary09.bin s10
+Client: Requesting '/random-binary09.bin' from lemonshark.ics.cs.cmu.edu:18829
+># More requests
+>request rc10 random-binary10.bin s0
+Client: Requesting '/random-binary10.bin' from lemonshark.ics.cs.cmu.edu:25636
+>request rc11 random-binary11.bin s1
+Client: Requesting '/random-binary11.bin' from lemonshark.ics.cs.cmu.edu:8455
+>request rc12 random-binary12.bin s2
+Client: Requesting '/random-binary12.bin' from lemonshark.ics.cs.cmu.edu:30474
+>request rc13 random-binary13.bin s3
+Client: Requesting '/random-binary13.bin' from lemonshark.ics.cs.cmu.edu:22061
+>request rc14 random-binary14.bin s4
+Client: Requesting '/random-binary14.bin' from lemonshark.ics.cs.cmu.edu:2011
+>request rs10 random-binary10.bin s10
+Client: Requesting '/random-binary10.bin' from lemonshark.ics.cs.cmu.edu:18829
+>request rs11 random-binary11.bin s10
+Client: Requesting '/random-binary11.bin' from lemonshark.ics.cs.cmu.edu:18829
+>request rs12 random-binary12.bin s10
+Client: Requesting '/random-binary12.bin' from lemonshark.ics.cs.cmu.edu:18829
+>request rs13 random-binary13.bin s10
+Client: Requesting '/random-binary13.bin' from lemonshark.ics.cs.cmu.edu:18829
+>request rs14 random-binary14.bin s10
+Client: Requesting '/random-binary14.bin' from lemonshark.ics.cs.cmu.edu:18829
+>wait *
+># More traffic
+>respond rc08a rc09a rc05a rc06a rc07a
+Server responded to request rc08a with status ok
+Server responded to request rc09a with status ok
+Server responded to request rc05a with status ok
+Server responded to request rc06a with status ok
+Server responded to request rc07a with status ok
+>wait *
+>respond rc10 rc11 rc12 rc13 rc14
+Server responded to request rc10 with status ok
+Server responded to request rc11 with status ok
+Server responded to request rc12 with status ok
+Server responded to request rc13 with status ok
+Server responded to request rc14 with status ok
+>fetch fc05a random-binary05.bin s0
+Client: Fetching '/random-binary05.bin' from lemonshark.ics.cs.cmu.edu:25636
+>fetch fc06a random-binary06.bin s1
+Client: Fetching '/random-binary06.bin' from lemonshark.ics.cs.cmu.edu:8455
+>fetch fc07a random-binary07.bin s2
+Client: Fetching '/random-binary07.bin' from lemonshark.ics.cs.cmu.edu:30474
+>fetch fc08a random-binary08.bin s3
+Client: Fetching '/random-binary08.bin' from lemonshark.ics.cs.cmu.edu:22061
+>fetch fc09a random-binary09.bin s4
+Client: Fetching '/random-binary09.bin' from lemonshark.ics.cs.cmu.edu:2011
+>respond rs08a rs09a rs05a rs06a rs07a
+Server responded to request rs08a with status ok
+Server responded to request rs09a with status ok
+Server responded to request rs05a with status ok
+Server responded to request rs06a with status ok
+Server responded to request rs07a with status ok
+>wait *
+>respond rs10 rs11 rs12 rs13 rs14
+Server responded to request rs10 with status ok
+Server responded to request rs11 with status ok
+Server responded to request rs12 with status ok
+Server responded to request rs13 with status ok
+Server responded to request rs14 with status ok
+>fetch fs05a random-binary05.bin s10
+Client: Fetching '/random-binary05.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs06a random-binary06.bin s10
+Client: Fetching '/random-binary06.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs07a random-binary07.bin s10
+Client: Fetching '/random-binary07.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs08a random-binary08.bin s10
+Client: Fetching '/random-binary08.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs09a random-binary09.bin s10
+Client: Fetching '/random-binary09.bin' from lemonshark.ics.cs.cmu.edu:18829
+># Move data
+>fetch fc00b random-binary00.bin s0
+Client: Fetching '/random-binary00.bin' from lemonshark.ics.cs.cmu.edu:25636
+>fetch fc01b random-binary01.bin s1
+Client: Fetching '/random-binary01.bin' from lemonshark.ics.cs.cmu.edu:8455
+>fetch fc02b random-binary02.bin s2
+Client: Fetching '/random-binary02.bin' from lemonshark.ics.cs.cmu.edu:30474
+>fetch fc03b random-binary03.bin s3
+Client: Fetching '/random-binary03.bin' from lemonshark.ics.cs.cmu.edu:22061
+>fetch fc04b random-binary04.bin s4
+Client: Fetching '/random-binary04.bin' from lemonshark.ics.cs.cmu.edu:2011
+>fetch fc05b random-binary05.bin s0
+Client: Fetching '/random-binary05.bin' from lemonshark.ics.cs.cmu.edu:25636
+>fetch fc06b random-binary06.bin s1
+Client: Fetching '/random-binary06.bin' from lemonshark.ics.cs.cmu.edu:8455
+>fetch fc07b random-binary07.bin s2
+Client: Fetching '/random-binary07.bin' from lemonshark.ics.cs.cmu.edu:30474
+>fetch fc08b random-binary08.bin s3
+Client: Fetching '/random-binary08.bin' from lemonshark.ics.cs.cmu.edu:22061
+>fetch fc09b random-binary09.bin s4
+Client: Fetching '/random-binary09.bin' from lemonshark.ics.cs.cmu.edu:2011
+>fetch fs00b random-binary00.bin s10
+Client: Fetching '/random-binary00.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs01b random-binary01.bin s10
+Client: Fetching '/random-binary01.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs02b random-binary02.bin s10
+Client: Fetching '/random-binary02.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs03b random-binary03.bin s10
+Client: Fetching '/random-binary03.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs04b random-binary04.bin s10
+Client: Fetching '/random-binary04.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs05b random-binary05.bin s10
+Client: Fetching '/random-binary05.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs06b random-binary06.bin s10
+Client: Fetching '/random-binary06.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs07b random-binary07.bin s10
+Client: Fetching '/random-binary07.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs08b random-binary08.bin s10
+Client: Fetching '/random-binary08.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs09b random-binary09.bin s10
+Client: Fetching '/random-binary09.bin' from lemonshark.ics.cs.cmu.edu:18829
+># Refetch everything
+>fetch fs00c random-binary00.bin s10
+Client: Fetching '/random-binary00.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs01c random-binary01.bin s10
+Client: Fetching '/random-binary01.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs02c random-binary02.bin s10
+Client: Fetching '/random-binary02.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs03c random-binary03.bin s10
+Client: Fetching '/random-binary03.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs04c random-binary04.bin s10
+Client: Fetching '/random-binary04.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs05c random-binary05.bin s10
+Client: Fetching '/random-binary05.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs06c random-binary06.bin s10
+Client: Fetching '/random-binary06.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs07c random-binary07.bin s10
+Client: Fetching '/random-binary07.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs08c random-binary08.bin s10
+Client: Fetching '/random-binary08.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs09c random-binary09.bin s10
+Client: Fetching '/random-binary09.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fc00c random-binary00.bin s0
+Client: Fetching '/random-binary00.bin' from lemonshark.ics.cs.cmu.edu:25636
+>fetch fc01c random-binary01.bin s1
+Client: Fetching '/random-binary01.bin' from lemonshark.ics.cs.cmu.edu:8455
+>fetch fc02c random-binary02.bin s2
+Client: Fetching '/random-binary02.bin' from lemonshark.ics.cs.cmu.edu:30474
+>fetch fc03c random-binary03.bin s3
+Client: Fetching '/random-binary03.bin' from lemonshark.ics.cs.cmu.edu:22061
+>fetch fc04c random-binary04.bin s4
+Client: Fetching '/random-binary04.bin' from lemonshark.ics.cs.cmu.edu:2011
+>fetch fc05c random-binary05.bin s0
+Client: Fetching '/random-binary05.bin' from lemonshark.ics.cs.cmu.edu:25636
+>fetch fc06c random-binary06.bin s1
+Client: Fetching '/random-binary06.bin' from lemonshark.ics.cs.cmu.edu:8455
+>fetch fc07c random-binary07.bin s2
+Client: Fetching '/random-binary07.bin' from lemonshark.ics.cs.cmu.edu:30474
+>fetch fc08c random-binary08.bin s3
+Client: Fetching '/random-binary08.bin' from lemonshark.ics.cs.cmu.edu:22061
+>fetch fc09c random-binary09.bin s4
+Client: Fetching '/random-binary09.bin' from lemonshark.ics.cs.cmu.edu:2011
+># Refetch everything
+>fetch fs00d random-binary00.bin s10
+Client: Fetching '/random-binary00.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs01d random-binary01.bin s10
+Client: Fetching '/random-binary01.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs02d random-binary02.bin s10
+Client: Fetching '/random-binary02.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs03d random-binary03.bin s10
+Client: Fetching '/random-binary03.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs04d random-binary04.bin s10
+Client: Fetching '/random-binary04.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fc00d random-binary00.bin s0
+Client: Fetching '/random-binary00.bin' from lemonshark.ics.cs.cmu.edu:25636
+>fetch fc01d random-binary01.bin s1
+Client: Fetching '/random-binary01.bin' from lemonshark.ics.cs.cmu.edu:8455
+>fetch fc02d random-binary02.bin s2
+Client: Fetching '/random-binary02.bin' from lemonshark.ics.cs.cmu.edu:30474
+>fetch fc03d random-binary03.bin s3
+Client: Fetching '/random-binary03.bin' from lemonshark.ics.cs.cmu.edu:22061
+>fetch fc04d random-binary04.bin s4
+Client: Fetching '/random-binary04.bin' from lemonshark.ics.cs.cmu.edu:2011
+>fetch fc05d random-binary05.bin s0
+Client: Fetching '/random-binary05.bin' from lemonshark.ics.cs.cmu.edu:25636
+>fetch fc06d random-binary06.bin s1
+Client: Fetching '/random-binary06.bin' from lemonshark.ics.cs.cmu.edu:8455
+>fetch fc07d random-binary07.bin s2
+Client: Fetching '/random-binary07.bin' from lemonshark.ics.cs.cmu.edu:30474
+>fetch fc08d random-binary08.bin s3
+Client: Fetching '/random-binary08.bin' from lemonshark.ics.cs.cmu.edu:22061
+>fetch fc09d random-binary09.bin s4
+Client: Fetching '/random-binary09.bin' from lemonshark.ics.cs.cmu.edu:2011
+>fetch fs05d random-binary05.bin s10
+Client: Fetching '/random-binary05.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs06d random-binary06.bin s10
+Client: Fetching '/random-binary06.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs07d random-binary07.bin s10
+Client: Fetching '/random-binary07.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs08d random-binary08.bin s10
+Client: Fetching '/random-binary08.bin' from lemonshark.ics.cs.cmu.edu:18829
+>fetch fs09d random-binary09.bin s10
+Client: Fetching '/random-binary09.bin' from lemonshark.ics.cs.cmu.edu:18829
+>wait *
+>check fc00a
+Request fc00a yielded expected status 'ok'
+>check fc01a
+Request fc01a yielded expected status 'ok'
+>check fc02a
+Request fc02a yielded expected status 'ok'
+>check fc03a
+Request fc03a yielded expected status 'ok'
+>check fc04a
+Request fc04a yielded expected status 'ok'
+>check fc05a
+Request fc05a yielded expected status 'ok'
+>check fc06a
+Request fc06a yielded expected status 'ok'
+>check fc07a
+Request fc07a yielded expected status 'ok'
+>check fc08a
+Request fc08a yielded expected status 'ok'
+>check fc09a
+Request fc09a yielded expected status 'ok'
+>check fc00b
+Request fc00b yielded expected status 'ok'
+>check fc01b
+Request fc01b yielded expected status 'ok'
+>check fc02b
+Request fc02b yielded expected status 'ok'
+>check fc03b
+Request fc03b yielded expected status 'ok'
+>check fc04b
+Request fc04b yielded expected status 'ok'
+>check fc05b
+Request fc05b yielded expected status 'ok'
+>check fc06b
+Request fc06b yielded expected status 'ok'
+>check fc07b
+Request fc07b yielded expected status 'ok'
+>check fc08b
+Request fc08b yielded expected status 'ok'
+>check fc09b
+Request fc09b yielded expected status 'ok'
+>check rc05a
+Request rc05a yielded expected status 'ok'
+>check rc06a
+Request rc06a yielded expected status 'ok'
+>check rc07a
+Request rc07a yielded expected status 'ok'
+>check rc08a
+Request rc08a yielded expected status 'ok'
+>check rc09a
+Request rc09a yielded expected status 'ok'
+>check rc10
+Request rc10 yielded expected status 'ok'
+>check rc11
+Request rc11 yielded expected status 'ok'
+>check rc12
+Request rc12 yielded expected status 'ok'
+>check rc13
+Request rc13 yielded expected status 'ok'
+>check rc14
+Request rc14 yielded expected status 'ok'
+>check fs00a
+Request fs00a yielded expected status 'ok'
+>check fs01a
+Request fs01a yielded expected status 'ok'
+>check fs02a
+Request fs02a yielded expected status 'ok'
+>check fs03a
+Request fs03a yielded expected status 'ok'
+>check fs04a
+Request fs04a yielded expected status 'ok'
+>check fs05a
+Request fs05a yielded expected status 'ok'
+>check fs06a
+Request fs06a yielded expected status 'ok'
+>check fs07a
+Request fs07a yielded expected status 'ok'
+>check fs08a
+Request fs08a yielded expected status 'ok'
+>check fs09a
+Request fs09a yielded expected status 'ok'
+>check fs00b
+Request fs00b yielded expected status 'ok'
+>check fs01b
+Request fs01b yielded expected status 'ok'
+>check fs02b
+Request fs02b yielded expected status 'ok'
+>check fs03b
+Request fs03b yielded expected status 'ok'
+>check fs04b
+Request fs04b yielded expected status 'ok'
+>check fs05b
+Request fs05b yielded expected status 'ok'
+>check fs06b
+Request fs06b yielded expected status 'ok'
+>check fs07b
+Request fs07b yielded expected status 'ok'
+>check fs08b
+Request fs08b yielded expected status 'ok'
+>check fs09b
+Request fs09b yielded expected status 'ok'
+>check rs05a
+Request rs05a yielded expected status 'ok'
+>check rs06a
+Request rs06a yielded expected status 'ok'
+>check rs07a
+Request rs07a yielded expected status 'ok'
+>check rs08a
+Request rs08a yielded expected status 'ok'
+>check rs09a
+Request rs09a yielded expected status 'ok'
+>check rs10
+Request rs10 yielded expected status 'ok'
+>check rs11
+Request rs11 yielded expected status 'ok'
+>check rs12
+Request rs12 yielded expected status 'ok'
+>check rs13
+Request rs13 yielded expected status 'ok'
+>check rs14
+Request rs14 yielded expected status 'ok'
+>check fc00c
+Request fc00c yielded expected status 'ok'
+>check fc01c
+Request fc01c yielded expected status 'ok'
+>check fc02c
+Request fc02c yielded expected status 'ok'
+>check fc03c
+Request fc03c yielded expected status 'ok'
+>check fc04c
+Request fc04c yielded expected status 'ok'
+>check fc05c
+Request fc05c yielded expected status 'ok'
+>check fc06c
+Request fc06c yielded expected status 'ok'
+>check fc07c
+Request fc07c yielded expected status 'ok'
+>check fc08c
+Request fc08c yielded expected status 'ok'
+>check fc09c
+Request fc09c yielded expected status 'ok'
+>check fs00c
+Request fs00c yielded expected status 'ok'
+>check fs01c
+Request fs01c yielded expected status 'ok'
+>check fs02c
+Request fs02c yielded expected status 'ok'
+>check fs03c
+Request fs03c yielded expected status 'ok'
+>check fs04c
+Request fs04c yielded expected status 'ok'
+>check fs05c
+Request fs05c yielded expected status 'ok'
+>check fs06c
+Request fs06c yielded expected status 'ok'
+>check fs07c
+Request fs07c yielded expected status 'ok'
+>check fs08c
+Request fs08c yielded expected status 'ok'
+>check fs09c
+Request fs09c yielded expected status 'ok'
+>check fc00d
+Request fc00d yielded expected status 'ok'
+>check fc01d
+Request fc01d yielded expected status 'ok'
+>check fc02d
+Request fc02d yielded expected status 'ok'
+>check fc03d
+Request fc03d yielded expected status 'ok'
+>check fc04d
+Request fc04d yielded expected status 'ok'
+>check fc05d
+Request fc05d yielded expected status 'ok'
+>check fc06d
+Request fc06d yielded expected status 'ok'
+>check fc07d
+Request fc07d yielded expected status 'ok'
+>check fc08d
+Request fc08d yielded expected status 'ok'
+>check fc09d
+Request fc09d yielded expected status 'ok'
+>check fs00d
+Request fs00d yielded expected status 'ok'
+>check fs01d
+Request fs01d yielded expected status 'ok'
+>check fs02d
+Request fs02d yielded expected status 'ok'
+>check fs03d
+Request fs03d yielded expected status 'ok'
+>check fs04d
+Request fs04d yielded expected status 'ok'
+>check fs05d
+Request fs05d yielded expected status 'ok'
+>check fs06d
+Request fs06d yielded expected status 'ok'
+>check fs07d
+Request fs07d yielded expected status 'ok'
+>check fs08d
+Request fs08d yielded expected status 'ok'
+>check fs09d
+Request fs09d yielded expected status 'ok'
+>delete random-binary00.bin
+>delete random-binary01.bin
+>delete random-binary02.bin
+>delete random-binary03.bin
+>delete random-binary04.bin
+>delete random-binary05.bin
+>delete random-binary06.bin
+>delete random-binary07.bin
+>delete random-binary08.bin
+>delete random-binary09.bin
+>delete random-binary10.bin
+>delete random-binary11.bin
+>delete random-binary12.bin
+>delete random-binary13.bin
+>delete random-binary14.bin
+>quit
+Testing done.  Elapsed time = 7.00 seconds
+ALL TESTS PASSED

@@ -1,0 +1,20 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:25004
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B01-sigpipe.cmd'
+># Test ability of proxy to handle SIGPIPE signal
+>generate r1.txt 1k
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:17813
+># Send SIGPIPE signal to proxy
+>signal 
+>fetch f1 r1.txt s1
+Client: Fetching '/r1.txt' from lemonshark.ics.cs.cmu.edu:17813
+>wait *
+>check f1
+Request f1 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.28 seconds
+ALL TESTS PASSED

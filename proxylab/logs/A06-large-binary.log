@@ -1,0 +1,23 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:32718
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A06-large-binary.cmd'
+># Test ability to retrieve 1MB binary file
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:32137
+># This file will contain arbitrary byte values
+>generate big-binary.bin 1M
+>request r1 big-binary.bin s1
+Client: Requesting '/big-binary.bin' from lemonshark.ics.cs.cmu.edu:32137
+>wait *
+>respond r1
+Server responded to request r1 with status ok
+>wait *
+>check r1
+Request r1 yielded expected status 'ok'
+>delete big-binary.bin
+>quit
+Testing done.  Elapsed time = 2.43 seconds
+ALL TESTS PASSED

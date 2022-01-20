@@ -1,0 +1,541 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:16301
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/D12-many-blocks2.cmd'
+># Cache should be able to hold many small binary blocks
+>serve s1 s2
+Server s1 running at lemonshark.ics.cs.cmu.edu:19274
+Server s2 running at lemonshark.ics.cs.cmu.edu:21217
+># 50 * 20K = 1000K.  The cache should be able to hold all of these
+>generate random-binary00.bin 20K
+>generate random-binary01.bin 20K
+>generate random-binary02.bin 20K
+>generate random-binary03.bin 20K
+>generate random-binary04.bin 20K
+>generate random-binary05.bin 20K
+>generate random-binary06.bin 20K
+>generate random-binary07.bin 20K
+>generate random-binary08.bin 20K
+>generate random-binary09.bin 20K
+>generate random-binary10.bin 20K
+>generate random-binary11.bin 20K
+>generate random-binary12.bin 20K
+>generate random-binary13.bin 20K
+>generate random-binary14.bin 20K
+>generate random-binary15.bin 20K
+>generate random-binary16.bin 20K
+>generate random-binary17.bin 20K
+>generate random-binary18.bin 20K
+>generate random-binary19.bin 20K
+>generate random-binary20.bin 20K
+>generate random-binary21.bin 20K
+>generate random-binary22.bin 20K
+>generate random-binary23.bin 20K
+>generate random-binary24.bin 20K
+>generate random-binary25.bin 20K
+>generate random-binary26.bin 20K
+>generate random-binary27.bin 20K
+>generate random-binary28.bin 20K
+>generate random-binary29.bin 20K
+>generate random-binary30.bin 20K
+>generate random-binary31.bin 20K
+>generate random-binary32.bin 20K
+>generate random-binary33.bin 20K
+>generate random-binary34.bin 20K
+>generate random-binary35.bin 20K
+>generate random-binary36.bin 20K
+>generate random-binary37.bin 20K
+>generate random-binary38.bin 20K
+>generate random-binary39.bin 20K
+>generate random-binary40.bin 20K
+>generate random-binary41.bin 20K
+>generate random-binary42.bin 20K
+>generate random-binary43.bin 20K
+>generate random-binary44.bin 20K
+>generate random-binary45.bin 20K
+>generate random-binary46.bin 20K
+>generate random-binary47.bin 20K
+>generate random-binary48.bin 20K
+>generate random-binary49.bin 20K
+># Generate request/response that will cause sequential proxy to fail
+>request rx0 random-binary00.bin s2
+Client: Requesting '/random-binary00.bin' from lemonshark.ics.cs.cmu.edu:21217
+>request rx1 random-binary01.bin s2
+Client: Requesting '/random-binary01.bin' from lemonshark.ics.cs.cmu.edu:21217
+>wait *
+>respond rx1 rx0
+Server responded to request rx1 with status ok
+Server responded to request rx0 with status ok
+>wait *
+>check rx0
+Request rx0 yielded expected status 'ok'
+>check rx1
+Request rx1 yielded expected status 'ok'
+># These should all be cached
+>fetch f00 random-binary00.bin s1
+Client: Fetching '/random-binary00.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f01 random-binary01.bin s1
+Client: Fetching '/random-binary01.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f02 random-binary02.bin s1
+Client: Fetching '/random-binary02.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f03 random-binary03.bin s1
+Client: Fetching '/random-binary03.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f04 random-binary04.bin s1
+Client: Fetching '/random-binary04.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f05 random-binary05.bin s1
+Client: Fetching '/random-binary05.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f06 random-binary06.bin s1
+Client: Fetching '/random-binary06.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f07 random-binary07.bin s1
+Client: Fetching '/random-binary07.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f08 random-binary08.bin s1
+Client: Fetching '/random-binary08.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f09 random-binary09.bin s1
+Client: Fetching '/random-binary09.bin' from lemonshark.ics.cs.cmu.edu:19274
+># These should all be cached and not cause any evictions
+>fetch f10 random-binary10.bin s1
+Client: Fetching '/random-binary10.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f11 random-binary11.bin s1
+Client: Fetching '/random-binary11.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f12 random-binary12.bin s1
+Client: Fetching '/random-binary12.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f13 random-binary13.bin s1
+Client: Fetching '/random-binary13.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f14 random-binary14.bin s1
+Client: Fetching '/random-binary14.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f15 random-binary15.bin s1
+Client: Fetching '/random-binary15.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f16 random-binary16.bin s1
+Client: Fetching '/random-binary16.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f17 random-binary17.bin s1
+Client: Fetching '/random-binary17.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f18 random-binary18.bin s1
+Client: Fetching '/random-binary18.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f19 random-binary19.bin s1
+Client: Fetching '/random-binary19.bin' from lemonshark.ics.cs.cmu.edu:19274
+># These should all be cached and not cause any evictions
+>fetch f20 random-binary20.bin s1
+Client: Fetching '/random-binary20.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f21 random-binary21.bin s1
+Client: Fetching '/random-binary21.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f22 random-binary22.bin s1
+Client: Fetching '/random-binary22.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f23 random-binary23.bin s1
+Client: Fetching '/random-binary23.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f24 random-binary24.bin s1
+Client: Fetching '/random-binary24.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f25 random-binary25.bin s1
+Client: Fetching '/random-binary25.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f26 random-binary26.bin s1
+Client: Fetching '/random-binary26.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f27 random-binary27.bin s1
+Client: Fetching '/random-binary27.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f28 random-binary28.bin s1
+Client: Fetching '/random-binary28.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f29 random-binary29.bin s1
+Client: Fetching '/random-binary29.bin' from lemonshark.ics.cs.cmu.edu:19274
+># These should all be cached and not cause any evictions
+>fetch f30 random-binary30.bin s1
+Client: Fetching '/random-binary30.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f31 random-binary31.bin s1
+Client: Fetching '/random-binary31.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f32 random-binary32.bin s1
+Client: Fetching '/random-binary32.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f33 random-binary33.bin s1
+Client: Fetching '/random-binary33.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f34 random-binary34.bin s1
+Client: Fetching '/random-binary34.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f35 random-binary35.bin s1
+Client: Fetching '/random-binary35.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f36 random-binary36.bin s1
+Client: Fetching '/random-binary36.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f37 random-binary37.bin s1
+Client: Fetching '/random-binary37.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f38 random-binary38.bin s1
+Client: Fetching '/random-binary38.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f39 random-binary39.bin s1
+Client: Fetching '/random-binary39.bin' from lemonshark.ics.cs.cmu.edu:19274
+># These should all be cached and not cause any evictions
+>fetch f40 random-binary40.bin s1
+Client: Fetching '/random-binary40.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f41 random-binary41.bin s1
+Client: Fetching '/random-binary41.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f42 random-binary42.bin s1
+Client: Fetching '/random-binary42.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f43 random-binary43.bin s1
+Client: Fetching '/random-binary43.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f44 random-binary44.bin s1
+Client: Fetching '/random-binary44.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f45 random-binary45.bin s1
+Client: Fetching '/random-binary45.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f46 random-binary46.bin s1
+Client: Fetching '/random-binary46.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f47 random-binary47.bin s1
+Client: Fetching '/random-binary47.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f48 random-binary48.bin s1
+Client: Fetching '/random-binary48.bin' from lemonshark.ics.cs.cmu.edu:19274
+>fetch f49 random-binary49.bin s1
+Client: Fetching '/random-binary49.bin' from lemonshark.ics.cs.cmu.edu:19274
+>wait *
+># Check all of the files
+>check f20
+Request f20 yielded expected status 'ok'
+>check f21
+Request f21 yielded expected status 'ok'
+>check f22
+Request f22 yielded expected status 'ok'
+>check f23
+Request f23 yielded expected status 'ok'
+>check f24
+Request f24 yielded expected status 'ok'
+>check f25
+Request f25 yielded expected status 'ok'
+>check f26
+Request f26 yielded expected status 'ok'
+>check f27
+Request f27 yielded expected status 'ok'
+>check f28
+Request f28 yielded expected status 'ok'
+>check f29
+Request f29 yielded expected status 'ok'
+>check f30
+Request f30 yielded expected status 'ok'
+>check f31
+Request f31 yielded expected status 'ok'
+>check f32
+Request f32 yielded expected status 'ok'
+>check f33
+Request f33 yielded expected status 'ok'
+>check f34
+Request f34 yielded expected status 'ok'
+>check f35
+Request f35 yielded expected status 'ok'
+>check f36
+Request f36 yielded expected status 'ok'
+>check f37
+Request f37 yielded expected status 'ok'
+>check f38
+Request f38 yielded expected status 'ok'
+>check f39
+Request f39 yielded expected status 'ok'
+>check f40
+Request f40 yielded expected status 'ok'
+>check f41
+Request f41 yielded expected status 'ok'
+>check f42
+Request f42 yielded expected status 'ok'
+>check f43
+Request f43 yielded expected status 'ok'
+>check f44
+Request f44 yielded expected status 'ok'
+>check f45
+Request f45 yielded expected status 'ok'
+>check f46
+Request f46 yielded expected status 'ok'
+>check f47
+Request f47 yielded expected status 'ok'
+>check f48
+Request f48 yielded expected status 'ok'
+>check f49
+Request f49 yielded expected status 'ok'
+>check f00
+Request f00 yielded expected status 'ok'
+>check f01
+Request f01 yielded expected status 'ok'
+>check f02
+Request f02 yielded expected status 'ok'
+>check f03
+Request f03 yielded expected status 'ok'
+>check f04
+Request f04 yielded expected status 'ok'
+>check f05
+Request f05 yielded expected status 'ok'
+>check f06
+Request f06 yielded expected status 'ok'
+>check f07
+Request f07 yielded expected status 'ok'
+>check f08
+Request f08 yielded expected status 'ok'
+>check f09
+Request f09 yielded expected status 'ok'
+>check f10
+Request f10 yielded expected status 'ok'
+>check f11
+Request f11 yielded expected status 'ok'
+>check f12
+Request f12 yielded expected status 'ok'
+>check f13
+Request f13 yielded expected status 'ok'
+>check f14
+Request f14 yielded expected status 'ok'
+>check f15
+Request f15 yielded expected status 'ok'
+>check f16
+Request f16 yielded expected status 'ok'
+>check f17
+Request f17 yielded expected status 'ok'
+>check f18
+Request f18 yielded expected status 'ok'
+>check f19
+Request f19 yielded expected status 'ok'
+># These should all be in the cache
+>request r00 random-binary00.bin s1
+Client: Requesting '/random-binary00.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r01 random-binary01.bin s1
+Client: Requesting '/random-binary01.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r02 random-binary02.bin s1
+Client: Requesting '/random-binary02.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r03 random-binary03.bin s1
+Client: Requesting '/random-binary03.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r04 random-binary04.bin s1
+Client: Requesting '/random-binary04.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r05 random-binary05.bin s1
+Client: Requesting '/random-binary05.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r06 random-binary06.bin s1
+Client: Requesting '/random-binary06.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r07 random-binary07.bin s1
+Client: Requesting '/random-binary07.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r08 random-binary08.bin s1
+Client: Requesting '/random-binary08.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r09 random-binary09.bin s1
+Client: Requesting '/random-binary09.bin' from lemonshark.ics.cs.cmu.edu:19274
+># These should all be in the cache
+>request r10 random-binary10.bin s1
+Client: Requesting '/random-binary10.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r11 random-binary11.bin s1
+Client: Requesting '/random-binary11.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r12 random-binary12.bin s1
+Client: Requesting '/random-binary12.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r13 random-binary13.bin s1
+Client: Requesting '/random-binary13.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r14 random-binary14.bin s1
+Client: Requesting '/random-binary14.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r15 random-binary15.bin s1
+Client: Requesting '/random-binary15.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r16 random-binary16.bin s1
+Client: Requesting '/random-binary16.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r17 random-binary17.bin s1
+Client: Requesting '/random-binary17.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r18 random-binary18.bin s1
+Client: Requesting '/random-binary18.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r19 random-binary19.bin s1
+Client: Requesting '/random-binary19.bin' from lemonshark.ics.cs.cmu.edu:19274
+># These should all be in the cache
+>request r20 random-binary20.bin s1
+Client: Requesting '/random-binary20.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r21 random-binary21.bin s1
+Client: Requesting '/random-binary21.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r22 random-binary22.bin s1
+Client: Requesting '/random-binary22.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r23 random-binary23.bin s1
+Client: Requesting '/random-binary23.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r24 random-binary24.bin s1
+Client: Requesting '/random-binary24.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r25 random-binary25.bin s1
+Client: Requesting '/random-binary25.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r26 random-binary26.bin s1
+Client: Requesting '/random-binary26.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r27 random-binary27.bin s1
+Client: Requesting '/random-binary27.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r28 random-binary28.bin s1
+Client: Requesting '/random-binary28.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r29 random-binary29.bin s1
+Client: Requesting '/random-binary29.bin' from lemonshark.ics.cs.cmu.edu:19274
+># These should all be in the cache
+>request r30 random-binary30.bin s1
+Client: Requesting '/random-binary30.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r31 random-binary31.bin s1
+Client: Requesting '/random-binary31.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r32 random-binary32.bin s1
+Client: Requesting '/random-binary32.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r33 random-binary33.bin s1
+Client: Requesting '/random-binary33.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r34 random-binary34.bin s1
+Client: Requesting '/random-binary34.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r35 random-binary35.bin s1
+Client: Requesting '/random-binary35.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r36 random-binary36.bin s1
+Client: Requesting '/random-binary36.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r37 random-binary37.bin s1
+Client: Requesting '/random-binary37.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r38 random-binary38.bin s1
+Client: Requesting '/random-binary38.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r39 random-binary39.bin s1
+Client: Requesting '/random-binary39.bin' from lemonshark.ics.cs.cmu.edu:19274
+># These should all be in the cache
+>request r40 random-binary40.bin s1
+Client: Requesting '/random-binary40.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r41 random-binary41.bin s1
+Client: Requesting '/random-binary41.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r42 random-binary42.bin s1
+Client: Requesting '/random-binary42.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r43 random-binary43.bin s1
+Client: Requesting '/random-binary43.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r44 random-binary44.bin s1
+Client: Requesting '/random-binary44.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r45 random-binary45.bin s1
+Client: Requesting '/random-binary45.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r46 random-binary46.bin s1
+Client: Requesting '/random-binary46.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r47 random-binary47.bin s1
+Client: Requesting '/random-binary47.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r48 random-binary48.bin s1
+Client: Requesting '/random-binary48.bin' from lemonshark.ics.cs.cmu.edu:19274
+>request r49 random-binary49.bin s1
+Client: Requesting '/random-binary49.bin' from lemonshark.ics.cs.cmu.edu:19274
+>wait *
+>check r40
+Request r40 yielded expected status 'ok'
+>check r41
+Request r41 yielded expected status 'ok'
+>check r42
+Request r42 yielded expected status 'ok'
+>check r43
+Request r43 yielded expected status 'ok'
+>check r44
+Request r44 yielded expected status 'ok'
+>check r45
+Request r45 yielded expected status 'ok'
+>check r46
+Request r46 yielded expected status 'ok'
+>check r47
+Request r47 yielded expected status 'ok'
+>check r48
+Request r48 yielded expected status 'ok'
+>check r49
+Request r49 yielded expected status 'ok'
+>check r30
+Request r30 yielded expected status 'ok'
+>check r31
+Request r31 yielded expected status 'ok'
+>check r32
+Request r32 yielded expected status 'ok'
+>check r33
+Request r33 yielded expected status 'ok'
+>check r34
+Request r34 yielded expected status 'ok'
+>check r35
+Request r35 yielded expected status 'ok'
+>check r36
+Request r36 yielded expected status 'ok'
+>check r37
+Request r37 yielded expected status 'ok'
+>check r38
+Request r38 yielded expected status 'ok'
+>check r39
+Request r39 yielded expected status 'ok'
+>check r20
+Request r20 yielded expected status 'ok'
+>check r21
+Request r21 yielded expected status 'ok'
+>check r22
+Request r22 yielded expected status 'ok'
+>check r23
+Request r23 yielded expected status 'ok'
+>check r24
+Request r24 yielded expected status 'ok'
+>check r25
+Request r25 yielded expected status 'ok'
+>check r26
+Request r26 yielded expected status 'ok'
+>check r27
+Request r27 yielded expected status 'ok'
+>check r28
+Request r28 yielded expected status 'ok'
+>check r29
+Request r29 yielded expected status 'ok'
+>check r10
+Request r10 yielded expected status 'ok'
+>check r11
+Request r11 yielded expected status 'ok'
+>check r12
+Request r12 yielded expected status 'ok'
+>check r13
+Request r13 yielded expected status 'ok'
+>check r14
+Request r14 yielded expected status 'ok'
+>check r15
+Request r15 yielded expected status 'ok'
+>check r16
+Request r16 yielded expected status 'ok'
+>check r17
+Request r17 yielded expected status 'ok'
+>check r18
+Request r18 yielded expected status 'ok'
+>check r19
+Request r19 yielded expected status 'ok'
+>check r00
+Request r00 yielded expected status 'ok'
+>check r01
+Request r01 yielded expected status 'ok'
+>check r02
+Request r02 yielded expected status 'ok'
+>check r03
+Request r03 yielded expected status 'ok'
+>check r04
+Request r04 yielded expected status 'ok'
+>check r05
+Request r05 yielded expected status 'ok'
+>check r06
+Request r06 yielded expected status 'ok'
+>check r07
+Request r07 yielded expected status 'ok'
+>check r08
+Request r08 yielded expected status 'ok'
+>check r09
+Request r09 yielded expected status 'ok'
+>delete random-binary00.bin
+>delete random-binary01.bin
+>delete random-binary02.bin
+>delete random-binary03.bin
+>delete random-binary04.bin
+>delete random-binary05.bin
+>delete random-binary06.bin
+>delete random-binary07.bin
+>delete random-binary08.bin
+>delete random-binary09.bin
+>delete random-binary10.bin
+>delete random-binary11.bin
+>delete random-binary12.bin
+>delete random-binary13.bin
+>delete random-binary14.bin
+>delete random-binary15.bin
+>delete random-binary16.bin
+>delete random-binary17.bin
+>delete random-binary18.bin
+>delete random-binary19.bin
+>delete random-binary20.bin
+>delete random-binary21.bin
+>delete random-binary22.bin
+>delete random-binary23.bin
+>delete random-binary24.bin
+>delete random-binary25.bin
+>delete random-binary26.bin
+>delete random-binary27.bin
+>delete random-binary28.bin
+>delete random-binary29.bin
+>delete random-binary30.bin
+>delete random-binary31.bin
+>delete random-binary32.bin
+>delete random-binary33.bin
+>delete random-binary34.bin
+>delete random-binary35.bin
+>delete random-binary36.bin
+>delete random-binary37.bin
+>delete random-binary38.bin
+>delete random-binary39.bin
+>delete random-binary40.bin
+>delete random-binary41.bin
+>delete random-binary42.bin
+>delete random-binary43.bin
+>delete random-binary44.bin
+>delete random-binary45.bin
+>delete random-binary46.bin
+>delete random-binary47.bin
+>delete random-binary48.bin
+>delete random-binary49.bin
+>quit
+Testing done.  Elapsed time = 6.23 seconds
+ALL TESTS PASSED

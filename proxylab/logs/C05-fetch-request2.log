@@ -1,0 +1,81 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:22156
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/C05-fetch-request2.cmd'
+># Test ability to handle combination of fetches and requests
+>serve s1 s2 s3
+Server s1 running at lemonshark.ics.cs.cmu.edu:27252
+Server s2 running at lemonshark.ics.cs.cmu.edu:8895
+Server s3 running at lemonshark.ics.cs.cmu.edu:26379
+>generate random-text1.txt 2K 
+>generate random-text2.txt 4K 
+>generate random-text3.txt 6K
+>generate random-text4.txt 8K
+>generate random-text5.txt 10K
+>generate random-text6.txt 12K
+>request r1 random-text1.txt s2
+Client: Requesting '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:8895
+>fetch f1 random-text1.txt s1
+Client: Fetching '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:27252
+>request r2 random-text2.txt s3
+Client: Requesting '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:26379
+>fetch f2 random-text2.txt s2
+Client: Fetching '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:8895
+>request r3 random-text3.txt s1
+Client: Requesting '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:27252
+>fetch f3 random-text3.txt s3
+Client: Fetching '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:26379
+>request r4 random-text4.txt s1
+Client: Requesting '/random-text4.txt' from lemonshark.ics.cs.cmu.edu:27252
+>fetch f4 random-text4.txt s3
+Client: Fetching '/random-text4.txt' from lemonshark.ics.cs.cmu.edu:26379
+>request r5 random-text5.txt s3
+Client: Requesting '/random-text5.txt' from lemonshark.ics.cs.cmu.edu:26379
+>fetch f5 random-text5.txt s2
+Client: Fetching '/random-text5.txt' from lemonshark.ics.cs.cmu.edu:8895
+>request r6 random-text6.txt s2
+Client: Requesting '/random-text6.txt' from lemonshark.ics.cs.cmu.edu:8895
+>fetch f6 random-text6.txt s1
+Client: Fetching '/random-text6.txt' from lemonshark.ics.cs.cmu.edu:27252
+>wait *
+>check f1
+Request f1 yielded expected status 'ok'
+>check f2
+Request f2 yielded expected status 'ok'
+>check f3
+Request f3 yielded expected status 'ok'
+>check f4
+Request f4 yielded expected status 'ok'
+>check f5
+Request f5 yielded expected status 'ok'
+>check f6
+Request f6 yielded expected status 'ok'
+>respond r1 r6
+Server responded to request r1 with status ok
+Server responded to request r6 with status ok
+>wait *
+>check r1
+Request r1 yielded expected status 'ok'
+>check r6
+Request r6 yielded expected status 'ok'
+>respond r2 r5
+Server responded to request r2 with status ok
+Server responded to request r5 with status ok
+>wait *
+>check r2
+Request r2 yielded expected status 'ok'
+>check r5
+Request r5 yielded expected status 'ok'
+>respond r3 r4
+Server responded to request r3 with status ok
+Server responded to request r4 with status ok
+>wait *
+>check r3
+Request r3 yielded expected status 'ok'
+>check r4
+Request r4 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.38 seconds
+ALL TESTS PASSED

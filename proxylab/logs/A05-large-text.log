@@ -1,0 +1,22 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:9488
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A05-large-text.cmd'
+># Test ability to retrieve 1MB text file
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:7469
+>generate long-text.txt 1M
+>request r1 long-text.txt s1
+Client: Requesting '/long-text.txt' from lemonshark.ics.cs.cmu.edu:7469
+>wait *
+>respond r1
+Server responded to request r1 with status ok
+>wait *
+>check r1
+Request r1 yielded expected status 'ok'
+>delete long-text.txt
+>quit
+Testing done.  Elapsed time = 2.41 seconds
+ALL TESTS PASSED

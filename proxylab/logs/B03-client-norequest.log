@@ -1,0 +1,38 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:12132
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B03-client-norequest.cmd'
+># Test what happens when client closes socket before sending request
+>generate r1.txt 1k
+>generate r2.txt 2k
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:8825
+># Disrupt command disrupts client by default
+>disrupt request
+>fetch f1 r1.txt s1
+Client: Fetching '/r1.txt' from lemonshark.ics.cs.cmu.edu:8825
+>delay 100
+Proxy stderr: Error writing error response body to client
+Proxy stderr: getaddrinfo failed (:): Name or service not known
+>fetch f2 r2.txt s1
+Client: Fetching '/r2.txt' from lemonshark.ics.cs.cmu.edu:8825
+>wait *
+># f1 failed, but f2 should be OK
+>trace f1
+== Trace of request f1 =========================================================
+Initial request by client had header:
+--------------------------------------------------------------------------------
+Request NOT received by server
+--------------------------------------------------------------------------------
+Reponse NOT sent by server
+--------------------------------------------------------------------------------
+Response NOT received by client
+--------------------------------------------------------------------------------
+Request status:  requesting
+>check f2
+Request f2 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.34 seconds
+ALL TESTS PASSED

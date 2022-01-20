@@ -1,0 +1,22 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:5382
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A04-missing-file.cmd'
+># Test ability to handle missing file
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:30114
+># Request nonexistent file
+>request r1 random-text.txt s1
+Client: Requesting '/random-text.txt' from lemonshark.ics.cs.cmu.edu:30114
+>wait *
+>respond r1
+Server responded to request r1 with status not_found (File 'random-text.txt' not found)
+>wait *
+># Response should be that file was not found
+>check r1 404
+Request r1 yielded expected status 'not_found'
+>quit
+Testing done.  Elapsed time = 2.21 seconds
+ALL TESTS PASSED

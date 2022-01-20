@@ -1,0 +1,75 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:32528
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/D05-multi-server1.cmd'
+># Make sure caches for different servers are not mixed
+># This test can be passed by a sequential proxy
+>serve s1 s2
+Server s1 running at lemonshark.ics.cs.cmu.edu:3647
+Server s2 running at lemonshark.ics.cs.cmu.edu:29805
+>generate random-text1.txt 100K
+>generate random-text2.txt 100K
+>generate random-text3.txt 100K
+># Serve first versions of the files using server s1
+>fetch f1a random-text1.txt s1
+Client: Fetching '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:3647
+>fetch f2a random-text2.txt s1
+Client: Fetching '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:3647
+>fetch f3a random-text3.txt s1
+Client: Fetching '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:3647
+>wait *
+>check f1a
+Request f1a yielded expected status 'ok'
+>check f2a
+Request f2a yielded expected status 'ok'
+>check f3a
+Request f3a yielded expected status 'ok'
+># Make sure caching occurred
+>request r1a random-text1.txt s1
+Client: Requesting '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:3647
+>wait r1a
+>check r1a
+Request r1a yielded expected status 'ok'
+>delete random-text1.txt
+>delete random-text2.txt
+>delete random-text3.txt
+># Create new files with same names but different contents
+>generate random-text1.txt 99K
+>generate random-text2.txt 99K
+>generate random-text3.txt 99K
+># Serve second versions of the files using server s2
+>request r1b random-text1.txt s2
+Client: Requesting '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:29805
+>request r2b random-text2.txt s2
+Client: Requesting '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:29805
+>request r3b random-text3.txt s2
+Client: Requesting '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:29805
+>wait r1b
+>respond r1b
+Server responded to request r1b with status ok
+>wait r2b
+>respond r2b 
+Server responded to request r2b with status ok
+>wait r3b
+>respond r3b
+Server responded to request r3b with status ok
+># Since these requests were to a different server,
+># the responses should come from server, not from cache.
+>#
+># Respond in order
+>respond r1b r2b r3b
+Server responded to request r1b with status ok
+Server responded to request r2b with status ok
+Server responded to request r3b with status ok
+>wait *
+>check r1b
+Request r1b yielded expected status 'ok'
+>check r2b
+Request r2b yielded expected status 'ok'
+>check r3b
+Request r3b yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.69 seconds
+ALL TESTS PASSED

@@ -1,0 +1,50 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:23368
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/D04-big-file-cache.cmd'
+># Make sure don't cache large objects
+># This test can be passed by a sequential proxy
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:7540
+># This file is too big to cache
+>generate random-text1.txt 200K
+>generate random-text2.txt 20K
+>request r1a random-text1.txt s1
+Client: Requesting '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:7540
+>request r2a random-text2.txt s1
+Client: Requesting '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:7540
+># Respond in order
+>wait r1a
+>respond r1a
+Server responded to request r1a with status ok
+>wait r2a
+>respond r2a
+Server responded to request r2a with status ok
+>wait r1a r2a
+>check r1a
+Request r1a yielded expected status 'ok'
+>check r2a
+Request r2a yielded expected status 'ok'
+># Delete file so that future attempt to fetch it will fail
+>delete random-text1.txt
+># Should not serve from cache
+>request r1b random-text1.txt s1
+Client: Requesting '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:7540
+>wait r1b
+>respond r1b
+Server responded to request r1b with status not_found (File 'random-text1.txt' not found)
+># Should serve from cache.
+>request r2b random-text2.txt s1
+Client: Requesting '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:7540
+>wait r1b r2b
+># Correct implementation will try to fetch deleted file and return status 404
+>check r1b 404
+Request r1b yielded expected status 'not_found'
+># Correct implementation will serve this file from its cache
+>check r2b
+Request r2b yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.48 seconds
+ALL TESTS PASSED

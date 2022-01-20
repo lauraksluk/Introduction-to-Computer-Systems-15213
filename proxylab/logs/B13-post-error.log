@@ -1,0 +1,17 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:8123
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B13-post-error.cmd'
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:23657
+>generate random-text.txt 4K
+>post-request f1 random-text.txt s1
+Client: Fetching '/random-text.txt' from lemonshark.ics.cs.cmu.edu:23657
+>wait *
+>check f1 501
+Request f1 yielded expected status 'not_implemented'
+>quit
+Testing done.  Elapsed time = 2.28 seconds
+ALL TESTS PASSED

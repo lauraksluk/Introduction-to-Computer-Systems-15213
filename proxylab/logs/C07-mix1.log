@@ -1,0 +1,112 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:32398
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/C07-mix1.cmd'
+># Test ability to handle mix of requests and fetches, with missing and present binary and text files
+>serve s1 s2 s3
+Server s1 running at lemonshark.ics.cs.cmu.edu:19594
+Server s2 running at lemonshark.ics.cs.cmu.edu:26272
+Server s3 running at lemonshark.ics.cs.cmu.edu:3054
+>generate random-text1.txt 10k
+>generate random-binary1.bin 10k
+>generate random-text2.txt 100k
+>generate random-binary2.bin 100k
+>generate random-text3.txt 1m
+>generate random-binary3.bin 1m
+>request r1 random-text1.txt s1
+Client: Requesting '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:19594
+>request r2 random-binary2.bin s2
+Client: Requesting '/random-binary2.bin' from lemonshark.ics.cs.cmu.edu:26272
+>request r3 nothing1.txt s3
+Client: Requesting '/nothing1.txt' from lemonshark.ics.cs.cmu.edu:3054
+>request r4 random-binary2.bin s1
+Client: Requesting '/random-binary2.bin' from lemonshark.ics.cs.cmu.edu:19594
+>request r5 random-text3.txt s2
+Client: Requesting '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:26272
+>request r6 nothing2.txt s3
+Client: Requesting '/nothing2.txt' from lemonshark.ics.cs.cmu.edu:3054
+>request r7 random-text2.txt s1
+Client: Requesting '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:19594
+>request r8 random-binary3.bin s2
+Client: Requesting '/random-binary3.bin' from lemonshark.ics.cs.cmu.edu:26272
+>request r9 nothing3.txt s3
+Client: Requesting '/nothing3.txt' from lemonshark.ics.cs.cmu.edu:3054
+>wait *
+>respond r5 r6 r7 r8 r9
+Server responded to request r5 with status ok
+Server responded to request r6 with status not_found (File 'nothing2.txt' not found)
+Server responded to request r7 with status ok
+Server responded to request r8 with status ok
+Server responded to request r9 with status not_found (File 'nothing3.txt' not found)
+>wait *
+>respond r1 r2 r3 r4 
+Server responded to request r1 with status ok
+Server responded to request r2 with status ok
+Server responded to request r3 with status not_found (File 'nothing1.txt' not found)
+Server responded to request r4 with status ok
+>fetch f1 random-text1.txt s2
+Client: Fetching '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:26272
+>fetch f2 random-binary2.bin s3
+Client: Fetching '/random-binary2.bin' from lemonshark.ics.cs.cmu.edu:3054
+>fetch f3 nothing1.txt s1
+Client: Fetching '/nothing1.txt' from lemonshark.ics.cs.cmu.edu:19594
+>fetch f4 random-binary2.bin s1
+Client: Fetching '/random-binary2.bin' from lemonshark.ics.cs.cmu.edu:19594
+>fetch f5 random-text3.txt s3
+Client: Fetching '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:3054
+>fetch f6 nothing1.txt s2
+Client: Fetching '/nothing1.txt' from lemonshark.ics.cs.cmu.edu:26272
+>fetch f7 random-text2.txt s2
+Client: Fetching '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:26272
+>fetch f8 random-binary3.bin s1
+Client: Fetching '/random-binary3.bin' from lemonshark.ics.cs.cmu.edu:19594
+>fetch f9 nothing4.txt s3
+Client: Fetching '/nothing4.txt' from lemonshark.ics.cs.cmu.edu:3054
+>wait *
+>check r1
+Request r1 yielded expected status 'ok'
+>check r2
+Request r2 yielded expected status 'ok'
+>check r3 404
+Request r3 yielded expected status 'not_found'
+>check r4
+Request r4 yielded expected status 'ok'
+>check r5
+Request r5 yielded expected status 'ok'
+>check r6 404
+Request r6 yielded expected status 'not_found'
+>check r7 
+Request r7 yielded expected status 'ok'
+>check r8 
+Request r8 yielded expected status 'ok'
+>check r9 404
+Request r9 yielded expected status 'not_found'
+>check f1
+Request f1 yielded expected status 'ok'
+>check f2
+Request f2 yielded expected status 'ok'
+>check f3 404
+Request f3 yielded expected status 'not_found'
+>check f4
+Request f4 yielded expected status 'ok'
+>check f5
+Request f5 yielded expected status 'ok'
+>check f6 404
+Request f6 yielded expected status 'not_found'
+>check f7 
+Request f7 yielded expected status 'ok'
+>check f8 
+Request f8 yielded expected status 'ok'
+>check f9 404
+Request f9 yielded expected status 'not_found'
+>delete random-text1.txt
+>delete random-binary1.bin
+>delete random-text2.txt
+>delete random-binary2.bin
+>delete random-text3.txt
+>delete random-binary3.bin
+>quit
+Testing done.  Elapsed time = 3.94 seconds
+ALL TESTS PASSED

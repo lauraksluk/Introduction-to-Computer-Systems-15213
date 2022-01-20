@@ -1,0 +1,93 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:4557
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A09-superfetch.cmd'
+># Test ability to handle lots of fetches
+>serve sa sb sc    # Set up 3 servers
+Server sa running at lemonshark.ics.cs.cmu.edu:28182
+Server sb running at lemonshark.ics.cs.cmu.edu:18535
+Server sc running at lemonshark.ics.cs.cmu.edu:12913
+>generate random-text1.txt 2K 
+>generate random-text2.txt 4K 
+>generate random-text3.txt 6K
+>generate random-text4.txt 8K
+>generate random-text5.txt 10K
+>generate random-text6.txt 12K
+>fetch f1a random-text1.txt sa
+Client: Fetching '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:28182
+>fetch f2a random-text2.txt sa
+Client: Fetching '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:28182
+>fetch f6a random-text6.txt sa
+Client: Fetching '/random-text6.txt' from lemonshark.ics.cs.cmu.edu:28182
+>fetch f2b random-text2.txt sb
+Client: Fetching '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:18535
+>fetch f3a random-text3.txt sa
+Client: Fetching '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:28182
+>fetch f5c random-text5.txt sc
+Client: Fetching '/random-text5.txt' from lemonshark.ics.cs.cmu.edu:12913
+>fetch f4a random-text4.txt sa
+Client: Fetching '/random-text4.txt' from lemonshark.ics.cs.cmu.edu:28182
+>fetch f6b random-text6.txt sb
+Client: Fetching '/random-text6.txt' from lemonshark.ics.cs.cmu.edu:18535
+>fetch f4c random-text4.txt sc
+Client: Fetching '/random-text4.txt' from lemonshark.ics.cs.cmu.edu:12913
+>fetch f3b random-text3.txt sb
+Client: Fetching '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:18535
+>fetch f5b random-text5.txt sb
+Client: Fetching '/random-text5.txt' from lemonshark.ics.cs.cmu.edu:18535
+>fetch f6c random-text6.txt sc
+Client: Fetching '/random-text6.txt' from lemonshark.ics.cs.cmu.edu:12913
+>fetch f3c random-text3.txt sc
+Client: Fetching '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:12913
+>fetch f4b random-text4.txt sb
+Client: Fetching '/random-text4.txt' from lemonshark.ics.cs.cmu.edu:18535
+>fetch f2c random-text2.txt sc
+Client: Fetching '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:12913
+>fetch f1b random-text1.txt sb
+Client: Fetching '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:18535
+>fetch f5a random-text5.txt sa
+Client: Fetching '/random-text5.txt' from lemonshark.ics.cs.cmu.edu:28182
+>fetch f1c random-text1.txt sc
+Client: Fetching '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:12913
+>wait *
+>check f1a
+Request f1a yielded expected status 'ok'
+>check f1b
+Request f1b yielded expected status 'ok'
+>check f1c
+Request f1c yielded expected status 'ok'
+>check f2a
+Request f2a yielded expected status 'ok'
+>check f2b
+Request f2b yielded expected status 'ok'
+>check f2c
+Request f2c yielded expected status 'ok'
+>check f3a
+Request f3a yielded expected status 'ok'
+>check f3b
+Request f3b yielded expected status 'ok'
+>check f3c
+Request f3c yielded expected status 'ok'
+>check f4a
+Request f4a yielded expected status 'ok'
+>check f4b
+Request f4b yielded expected status 'ok'
+>check f4c
+Request f4c yielded expected status 'ok'
+>check f5a
+Request f5a yielded expected status 'ok'
+>check f5b
+Request f5b yielded expected status 'ok'
+>check f5c
+Request f5c yielded expected status 'ok'
+>check f6a
+Request f6a yielded expected status 'ok'
+>check f6b
+Request f6b yielded expected status 'ok'
+>check f6c
+Request f6c yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.55 seconds
+ALL TESTS PASSED

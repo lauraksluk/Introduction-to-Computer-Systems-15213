@@ -1,0 +1,177 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:1281
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/D09-lru-cache1.cmd'
+># Make sure cache uses an LRU policy
+># If reread files from cache, then need to update LRU status
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:30736
+>generate random-text01.txt 100K
+>generate random-text02.txt 100K
+>generate random-text03.txt 100K
+>generate random-text04.txt 100K
+>generate random-text05.txt 100K
+>generate random-text06.txt 100K
+>generate random-text07.txt 100K
+>generate random-text08.txt 100K
+>generate random-text09.txt 100K
+>generate random-text10.txt 100K
+>generate random-text11.txt 100K
+>generate random-text12.txt 100K
+>generate random-text13.txt 100K
+>generate random-text14.txt 100K
+>generate random-text15.txt 100K
+># Read blocks
+>request r01 random-text01.txt s1
+Client: Requesting '/random-text01.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r02 random-text02.txt s1
+Client: Requesting '/random-text02.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r03 random-text03.txt s1
+Client: Requesting '/random-text03.txt' from lemonshark.ics.cs.cmu.edu:30736
+>wait *
+>respond r03 r02 r01
+Server responded to request r03 with status ok
+Server responded to request r02 with status ok
+Server responded to request r01 with status ok
+>wait *
+>check r01
+Request r01 yielded expected status 'ok'
+>check r02
+Request r02 yielded expected status 'ok'
+>check r03
+Request r03 yielded expected status 'ok'
+># Generate more requests to fill up cache
+>request r04 random-text04.txt s1
+Client: Requesting '/random-text04.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r05 random-text05.txt s1
+Client: Requesting '/random-text05.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r06 random-text06.txt s1
+Client: Requesting '/random-text06.txt' from lemonshark.ics.cs.cmu.edu:30736
+>wait *
+>respond r04 r05 r06
+Server responded to request r04 with status ok
+Server responded to request r05 with status ok
+Server responded to request r06 with status ok
+>request r07 random-text07.txt s1
+Client: Requesting '/random-text07.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r08 random-text08.txt s1
+Client: Requesting '/random-text08.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r09 random-text09.txt s1
+Client: Requesting '/random-text09.txt' from lemonshark.ics.cs.cmu.edu:30736
+>wait *
+>check r04
+Request r04 yielded expected status 'ok'
+>check r05
+Request r05 yielded expected status 'ok'
+>check r06
+Request r06 yielded expected status 'ok'
+>respond r07 r08 r09
+Server responded to request r07 with status ok
+Server responded to request r08 with status ok
+Server responded to request r09 with status ok
+>wait *
+># Check that have initial requests in cache (and mark them as used)
+>request r01c random-text01.txt s1
+Client: Requesting '/random-text01.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r02c random-text02.txt s1
+Client: Requesting '/random-text02.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r03c random-text03.txt s1
+Client: Requesting '/random-text03.txt' from lemonshark.ics.cs.cmu.edu:30736
+>wait *
+>check r01c
+Request r01c yielded expected status 'ok'
+>check r02c
+Request r02c yielded expected status 'ok'
+>check r03c
+Request r03c yielded expected status 'ok'
+># Add more files to cache, but original 3 should remain
+>request r10 random-text10.txt s1
+Client: Requesting '/random-text10.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r11 random-text11.txt s1
+Client: Requesting '/random-text11.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r12 random-text12.txt s1
+Client: Requesting '/random-text12.txt' from lemonshark.ics.cs.cmu.edu:30736
+>wait *
+>check r07
+Request r07 yielded expected status 'ok'
+>check r08
+Request r08 yielded expected status 'ok'
+>check r09
+Request r09 yielded expected status 'ok'
+>respond r10 r11 r12
+Server responded to request r10 with status ok
+Server responded to request r11 with status ok
+Server responded to request r12 with status ok
+># Add more files to cache, but original 3 should remain
+>request r13 random-text13.txt s1
+Client: Requesting '/random-text13.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r14 random-text14.txt s1
+Client: Requesting '/random-text14.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r15 random-text15.txt s1
+Client: Requesting '/random-text15.txt' from lemonshark.ics.cs.cmu.edu:30736
+>wait *
+>check r10
+Request r10 yielded expected status 'ok'
+>check r11
+Request r11 yielded expected status 'ok'
+>check r12
+Request r12 yielded expected status 'ok'
+>respond r13 r14 r15
+Server responded to request r13 with status ok
+Server responded to request r14 with status ok
+Server responded to request r15 with status ok
+>wait *
+>check r13
+Request r13 yielded expected status 'ok'
+>check r14
+Request r14 yielded expected status 'ok'
+>check r15
+Request r15 yielded expected status 'ok'
+># Make sure initial requests have not been evicted
+>request r01n random-text01.txt s1
+Client: Requesting '/random-text01.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r02n random-text02.txt s1
+Client: Requesting '/random-text02.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r03n random-text03.txt s1
+Client: Requesting '/random-text03.txt' from lemonshark.ics.cs.cmu.edu:30736
+>wait *
+>check r01n 
+Request r01n yielded expected status 'ok'
+>check r02n 
+Request r02n yielded expected status 'ok'
+>check r03n 
+Request r03n yielded expected status 'ok'
+># Make sure still have final requests in cache
+>request r13c random-text13.txt s1
+Client: Requesting '/random-text13.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r14c random-text14.txt s1
+Client: Requesting '/random-text14.txt' from lemonshark.ics.cs.cmu.edu:30736
+>request r15c random-text15.txt s1
+Client: Requesting '/random-text15.txt' from lemonshark.ics.cs.cmu.edu:30736
+>wait *
+>check r13c
+Request r13c yielded expected status 'ok'
+>check r14c
+Request r14c yielded expected status 'ok'
+>check r15c
+Request r15c yielded expected status 'ok'
+>delete random-text01.txt
+>delete random-text02.txt
+>delete random-text03.txt
+>delete random-text04.txt
+>delete random-text05.txt
+>delete random-text06.txt
+>delete random-text07.txt
+>delete random-text08.txt
+>delete random-text09.txt
+>delete random-text10.txt
+>delete random-text11.txt
+>delete random-text12.txt
+>delete random-text13.txt
+>delete random-text14.txt
+>delete random-text15.txt
+>quit
+Testing done.  Elapsed time = 6.04 seconds
+ALL TESTS PASSED

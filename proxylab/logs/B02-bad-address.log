@@ -1,0 +1,24 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:22351
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B02-bad-address.cmd'
+># Test ability of proxy to handle bad IP address
+>generate r1.txt 1k
+># Server having name starting with '-' is disabled
+>serve -s1
+Disabled server -s1 set up at lemonshark.ics.cs.cmu.edu:9772
+>serve s2
+Server s2 running at lemonshark.ics.cs.cmu.edu:3742
+>fetch f1a r1.txt -s1
+Client: Fetching '/r1.txt' from lemonshark.ics.cs.cmu.edu:9772
+>fetch f1b r1.txt s2
+Client: Fetching '/r1.txt' from lemonshark.ics.cs.cmu.edu:3742
+>wait f1b
+># f1a failed, but f1b should be OK
+>check f1b
+Request f1b yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.23 seconds
+ALL TESTS PASSED

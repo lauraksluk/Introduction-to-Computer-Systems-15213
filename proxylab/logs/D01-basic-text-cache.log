@@ -1,0 +1,34 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:11108
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/D01-basic-text-cache.cmd'
+># Test use of cache
+># This test can be passed by a sequential proxy
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:19945
+>generate random-text1.txt 10K
+>generate random-text2.txt 10K
+>request r1a random-text1.txt s1
+Client: Requesting '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:19945
+>wait *
+>respond r1a
+Server responded to request r1a with status ok
+>wait *
+>check r1a
+Request r1a yielded expected status 'ok'
+>fetch f2 random-text2.txt s1
+Client: Fetching '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:19945
+>wait *
+>check f2
+Request f2 yielded expected status 'ok'
+>request r1b random-text1.txt s1
+Client: Requesting '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:19945
+># No response needed, since can serve from cache
+>wait *
+>check r1b
+Request r1b yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.84 seconds
+ALL TESTS PASSED

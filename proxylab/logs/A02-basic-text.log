@@ -1,0 +1,23 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:21415
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A02-basic-text.cmd'
+># Test ability to retrieve text file
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:14526
+>generate random-text.txt 10K
+># Request file from server
+>request r1 random-text.txt s1
+Client: Requesting '/random-text.txt' from lemonshark.ics.cs.cmu.edu:14526
+>wait *
+># Allow server to respond to request
+>respond r1
+Server responded to request r1 with status ok
+>wait *
+>check r1
+Request r1 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.23 seconds
+ALL TESTS PASSED

@@ -1,0 +1,62 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:3531
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B06-client-noresponse.cmd'
+># Test what happens when client closes socket before reading response
+>generate r1.txt 1k
+>generate r2.txt 2k
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:24270
+># Disrupt command disrupts client by default
+>disrupt response
+>fetch f1 r1.txt s1
+Client: Fetching '/r1.txt' from lemonshark.ics.cs.cmu.edu:24270
+>delay 100
+>fetch f2 r2.txt s1
+Client: Fetching '/r2.txt' from lemonshark.ics.cs.cmu.edu:24270
+>wait *
+># f1 failed, but f2 should be OK
+>trace f1
+== Trace of request f1 =========================================================
+Initial request by client had header:
+GET http://lemonshark.ics.cs.cmu.edu:24270/r1.txt HTTP/1.0\r\n
+Host: lemonshark.ics.cs.cmu.edu:24270\r\n
+Request-ID: f1\r\n
+Response: Immediate\r\n
+Connection: close\r\n
+Proxy-Connection: close \r\n
+User-Agent: CMU/1.0 Iguana/20180704 PxyDrive/0.0.1\r\n
+\r\n
+--------------------------------------------------------------------------------
+Message received by server had header:
+GET /r1.txt HTTP/1.0\r\n
+Host: lemonshark.ics.cs.cmu.edu:24270\r\n
+Request-ID: f1\r\n
+Response: Immediate\r\n
+Connection: close\r\n
+Proxy-Connection: close\r\n
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:3.10.0) Gecko/20191101 Firefox/63.0.1\r\n
+\r\n
+--------------------------------------------------------------------------------
+Message sent by server had header:
+HTTP/1.0 200 OK\r\n
+Server: Proxylab driver\r\n
+Request-ID: f1\r\n
+Content-length: 1000\r\n
+Content-type: text/plain\r\n
+Content-Identifier: s1-/r1.txt\r\n
+Sequence-Identifier: 1\r\n
+\r\n
+--------------------------------------------------------------------------------
+Response NOT received by client
+--------------------------------------------------------------------------------
+Response status: ok
+  Source file in ./source_files/random/r1.txt
+Request status:  requesting
+>check f2
+Request f2 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.33 seconds
+ALL TESTS PASSED

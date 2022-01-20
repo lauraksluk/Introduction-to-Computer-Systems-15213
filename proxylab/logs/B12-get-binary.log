@@ -1,0 +1,30 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:24631
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B12-get-binary.cmd'
+># Test ability of proxy to get binary data from real web server
+># These data came from versions of the SCS and ECE home pages
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/radiocity.png
+Both copies of URL match.  Result in ./get_files/get-001-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/radiocity.png
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/USflag.jpg
+Both copies of URL match.  Result in ./get_files/get-002-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/USflag.jpg
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/banner-for-the-founders.png
+Both copies of URL match.  Result in ./get_files/get-003-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/banner-for-the-founders.png
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/banner-cmu-ai.png
+Both copies of URL match.  Result in ./get_files/get-004-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/banner-cmu-ai.png
+># Nonexistent URLs.  Should yield status code 404
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/nonexistent.jpg
+Get of URL with and without proxy returned the same status code: 400
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/nonexistent.jpg
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/nonexistent.png
+Get of URL with and without proxy returned the same status code: 400
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/nonexistent.png
+>quit
+Testing done.  Elapsed time = 6.91 seconds
+ALL TESTS PASSED

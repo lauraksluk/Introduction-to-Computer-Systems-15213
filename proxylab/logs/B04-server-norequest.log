@@ -1,0 +1,44 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:24561
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B04-server-norequest.cmd'
+># Test what happens when server closes socket before reading request
+>generate r1.txt 1k
+>generate r2.txt 2k
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:22476
+>disrupt request s1
+>delay 100
+>fetch f1 r1.txt s1
+Client: Fetching '/r1.txt' from lemonshark.ics.cs.cmu.edu:22476
+>delay 100
+>fetch f2 r2.txt s1
+Client: Fetching '/r2.txt' from lemonshark.ics.cs.cmu.edu:22476
+>wait *
+># f1 failed, but f2 should be OK
+>trace f1
+== Trace of request f1 =========================================================
+Initial request by client had header:
+GET http://lemonshark.ics.cs.cmu.edu:22476/r1.txt HTTP/1.0\r\n
+Host: lemonshark.ics.cs.cmu.edu:22476\r\n
+Request-ID: f1\r\n
+Response: Immediate\r\n
+Connection: close\r\n
+Proxy-Connection: close \r\n
+User-Agent: CMU/1.0 Iguana/20180704 PxyDrive/0.0.1\r\n
+\r\n
+--------------------------------------------------------------------------------
+Request NOT received by server
+--------------------------------------------------------------------------------
+Reponse NOT sent by server
+--------------------------------------------------------------------------------
+Response NOT received by client
+--------------------------------------------------------------------------------
+Request status:  error (Got empty response for URL request http://lemonshark.ics.cs.cmu.edu:22476/r1.txt)
+>check f2
+Request f2 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.48 seconds
+ALL TESTS PASSED

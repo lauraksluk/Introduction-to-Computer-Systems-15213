@@ -1,0 +1,87 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:18043
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A11-fetch-request2.cmd'
+># Test ability to handle combination of fetches and requests of binary data
+>serve s1 s2 s3
+Server s1 running at lemonshark.ics.cs.cmu.edu:26489
+Server s2 running at lemonshark.ics.cs.cmu.edu:14017
+Server s3 running at lemonshark.ics.cs.cmu.edu:21267
+>generate random-binary1.bin 2K 
+>generate random-binary2.bin 4K 
+>generate random-binary3.bin 6K
+>generate random-binary4.bin 8K
+>generate random-binary5.bin 10K
+>generate random-binary6.bin 12K
+>fetch f1 random-binary1.bin s1
+Client: Fetching '/random-binary1.bin' from lemonshark.ics.cs.cmu.edu:26489
+>request r1 random-binary1.bin s2
+Client: Requesting '/random-binary1.bin' from lemonshark.ics.cs.cmu.edu:14017
+>fetch f2 random-binary2.bin s2
+Client: Fetching '/random-binary2.bin' from lemonshark.ics.cs.cmu.edu:14017
+>request r2 random-binary2.bin s3
+Client: Requesting '/random-binary2.bin' from lemonshark.ics.cs.cmu.edu:21267
+>fetch f3 random-binary3.bin s3
+Client: Fetching '/random-binary3.bin' from lemonshark.ics.cs.cmu.edu:21267
+>request r3 random-binary3.bin s1
+Client: Requesting '/random-binary3.bin' from lemonshark.ics.cs.cmu.edu:26489
+>fetch f4 random-binary4.bin s3
+Client: Fetching '/random-binary4.bin' from lemonshark.ics.cs.cmu.edu:21267
+>request r4 random-binary4.bin s1
+Client: Requesting '/random-binary4.bin' from lemonshark.ics.cs.cmu.edu:26489
+>fetch f5 random-binary5.bin s2
+Client: Fetching '/random-binary5.bin' from lemonshark.ics.cs.cmu.edu:14017
+>request r5 random-binary5.bin s3
+Client: Requesting '/random-binary5.bin' from lemonshark.ics.cs.cmu.edu:21267
+>fetch f6 random-binary6.bin s1
+Client: Fetching '/random-binary6.bin' from lemonshark.ics.cs.cmu.edu:26489
+>request r6 random-binary6.bin s2
+Client: Requesting '/random-binary6.bin' from lemonshark.ics.cs.cmu.edu:14017
+>wait f1 r1
+>check f1
+Request f1 yielded expected status 'ok'
+>respond r1
+Server responded to request r1 with status ok
+>wait r1 f2 r2
+>check r1
+Request r1 yielded expected status 'ok'
+>check f2
+Request f2 yielded expected status 'ok'
+>respond r2
+Server responded to request r2 with status ok
+>wait r2 f3 r3
+>check r2
+Request r2 yielded expected status 'ok'
+>check f3
+Request f3 yielded expected status 'ok'
+>respond r3
+Server responded to request r3 with status ok
+>wait r3 f4 r4
+>check r3
+Request r3 yielded expected status 'ok'
+>check f4
+Request f4 yielded expected status 'ok'
+>respond r4
+Server responded to request r4 with status ok
+>wait r4 f5 r5
+>check r4
+Request r4 yielded expected status 'ok'
+>check f5
+Request f5 yielded expected status 'ok'
+>respond r5
+Server responded to request r5 with status ok
+>wait r5 f6 r6
+>check r5
+Request r5 yielded expected status 'ok'
+>check f6
+Request f6 yielded expected status 'ok'
+>respond r6
+Server responded to request r6 with status ok
+>wait r6
+>check r6
+Request r6 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 3.08 seconds
+ALL TESTS PASSED

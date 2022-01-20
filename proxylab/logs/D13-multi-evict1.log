@@ -1,0 +1,242 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:20333
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/D13-multi-evict1.cmd'
+># Test ability to evict multiple objects to make room for big ones
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:15951
+>generate little-text00.txt 10K
+>generate little-text01.txt 10K
+>generate little-text02.txt 10K
+>generate little-text03.txt 10K
+>generate little-text04.txt 10K
+>generate little-text05.txt 10K
+>generate little-text06.txt 10K
+>generate little-text07.txt 10K
+>generate little-text08.txt 10K
+>generate little-text09.txt 10K
+>generate big-text00.txt 100K
+>generate big-text01.txt 100K
+>generate big-text02.txt 100K
+>generate big-text03.txt 100K
+>generate big-text04.txt 100K
+>generate big-text05.txt 100K
+>generate big-text06.txt 100K
+>generate big-text07.txt 100K
+>generate big-text08.txt 100K
+>generate big-text09.txt 100K
+>generate big-text10.txt 100K
+># Use 100K of cache
+>fetch fl00 little-text00.txt s1
+Client: Fetching '/little-text00.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fl01 little-text01.txt s1
+Client: Fetching '/little-text01.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fl02 little-text02.txt s1
+Client: Fetching '/little-text02.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fl03 little-text03.txt s1
+Client: Fetching '/little-text03.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fl04 little-text04.txt s1
+Client: Fetching '/little-text04.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fl05 little-text05.txt s1
+Client: Fetching '/little-text05.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fl06 little-text06.txt s1
+Client: Fetching '/little-text06.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fl07 little-text07.txt s1
+Client: Fetching '/little-text07.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fl08 little-text08.txt s1
+Client: Fetching '/little-text08.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fl09 little-text09.txt s1
+Client: Fetching '/little-text09.txt' from lemonshark.ics.cs.cmu.edu:15951
+>wait *
+>check fl00
+Request fl00 yielded expected status 'ok'
+>check fl01
+Request fl01 yielded expected status 'ok'
+>check fl02
+Request fl02 yielded expected status 'ok'
+>check fl03
+Request fl03 yielded expected status 'ok'
+>check fl04
+Request fl04 yielded expected status 'ok'
+>check fl05
+Request fl05 yielded expected status 'ok'
+>check fl06
+Request fl06 yielded expected status 'ok'
+>check fl07
+Request fl07 yielded expected status 'ok'
+>check fl08
+Request fl08 yielded expected status 'ok'
+>check fl09
+Request fl09 yielded expected status 'ok'
+># Use another 200K of cache
+>fetch fb00 big-text00.txt s1
+Client: Fetching '/big-text00.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fb01 big-text01.txt s1
+Client: Fetching '/big-text01.txt' from lemonshark.ics.cs.cmu.edu:15951
+>wait *
+># Use another 700K to fill up cache
+>fetch fb02 big-text02.txt s1
+Client: Fetching '/big-text02.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fb03 big-text03.txt s1
+Client: Fetching '/big-text03.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fb04 big-text04.txt s1
+Client: Fetching '/big-text04.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fb05 big-text05.txt s1
+Client: Fetching '/big-text05.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fb06 big-text06.txt s1
+Client: Fetching '/big-text06.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fb07 big-text07.txt s1
+Client: Fetching '/big-text07.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fb08 big-text08.txt s1
+Client: Fetching '/big-text08.txt' from lemonshark.ics.cs.cmu.edu:15951
+>wait *
+># These should evict the little entries
+>fetch fb09 big-text09.txt s1
+Client: Fetching '/big-text09.txt' from lemonshark.ics.cs.cmu.edu:15951
+>fetch fb10 big-text10.txt s1
+Client: Fetching '/big-text10.txt' from lemonshark.ics.cs.cmu.edu:15951
+>wait *
+>check fb00
+Request fb00 yielded expected status 'ok'
+>check fb01
+Request fb01 yielded expected status 'ok'
+>check fb02
+Request fb02 yielded expected status 'ok'
+>check fb03
+Request fb03 yielded expected status 'ok'
+>check fb04
+Request fb04 yielded expected status 'ok'
+>check fb05
+Request fb05 yielded expected status 'ok'
+>check fb06
+Request fb06 yielded expected status 'ok'
+>check fb07
+Request fb07 yielded expected status 'ok'
+>check fb08
+Request fb08 yielded expected status 'ok'
+>check fb09
+Request fb09 yielded expected status 'ok'
+>check fb10
+Request fb10 yielded expected status 'ok'
+>delete little-text00.txt
+>delete little-text01.txt
+>delete little-text02.txt
+>delete little-text03.txt
+>delete little-text04.txt
+>delete little-text05.txt
+>delete little-text06.txt
+>delete little-text07.txt
+>delete little-text08.txt
+>delete little-text09.txt
+># These should not be in the cache
+>request rl00 little-text00.txt s1
+Client: Requesting '/little-text00.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rl01 little-text01.txt s1
+Client: Requesting '/little-text01.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rl02 little-text02.txt s1
+Client: Requesting '/little-text02.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rl03 little-text03.txt s1
+Client: Requesting '/little-text03.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rl04 little-text04.txt s1
+Client: Requesting '/little-text04.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rl05 little-text05.txt s1
+Client: Requesting '/little-text05.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rl06 little-text06.txt s1
+Client: Requesting '/little-text06.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rl07 little-text07.txt s1
+Client: Requesting '/little-text07.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rl08 little-text08.txt s1
+Client: Requesting '/little-text08.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rl09 little-text09.txt s1
+Client: Requesting '/little-text09.txt' from lemonshark.ics.cs.cmu.edu:15951
+>wait *
+># Server should respond that the files were not found
+># Out of order response will cause sequential proxy to fail
+>respond rl05 rl06 rl07 rl08 rl09
+Server responded to request rl05 with status not_found (File 'little-text05.txt' not found)
+Server responded to request rl06 with status not_found (File 'little-text06.txt' not found)
+Server responded to request rl07 with status not_found (File 'little-text07.txt' not found)
+Server responded to request rl08 with status not_found (File 'little-text08.txt' not found)
+Server responded to request rl09 with status not_found (File 'little-text09.txt' not found)
+>respond rl00 rl01 rl02 rl03 rl04
+Server responded to request rl00 with status not_found (File 'little-text00.txt' not found)
+Server responded to request rl01 with status not_found (File 'little-text01.txt' not found)
+Server responded to request rl02 with status not_found (File 'little-text02.txt' not found)
+Server responded to request rl03 with status not_found (File 'little-text03.txt' not found)
+Server responded to request rl04 with status not_found (File 'little-text04.txt' not found)
+>wait *
+># Make sure correct response received
+>check rl00 404
+Request rl00 yielded expected status 'not_found'
+>check rl01 404
+Request rl01 yielded expected status 'not_found'
+>check rl02 404
+Request rl02 yielded expected status 'not_found'
+>check rl03 404
+Request rl03 yielded expected status 'not_found'
+>check rl04 404
+Request rl04 yielded expected status 'not_found'
+>check rl05 404
+Request rl05 yielded expected status 'not_found'
+>check rl06 404
+Request rl06 yielded expected status 'not_found'
+>check rl07 404
+Request rl07 yielded expected status 'not_found'
+>check rl08 404
+Request rl08 yielded expected status 'not_found'
+>check rl09 404
+Request rl09 yielded expected status 'not_found'
+># Make sure still have most of the big blocks in cache
+>request rb02 big-text02.txt s1
+Client: Requesting '/big-text02.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rb03 big-text03.txt s1
+Client: Requesting '/big-text03.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rb04 big-text04.txt s1
+Client: Requesting '/big-text04.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rb05 big-text05.txt s1
+Client: Requesting '/big-text05.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rb06 big-text06.txt s1
+Client: Requesting '/big-text06.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rb07 big-text07.txt s1
+Client: Requesting '/big-text07.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rb08 big-text08.txt s1
+Client: Requesting '/big-text08.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rb09 big-text09.txt s1
+Client: Requesting '/big-text09.txt' from lemonshark.ics.cs.cmu.edu:15951
+>request rb10 big-text10.txt s1
+Client: Requesting '/big-text10.txt' from lemonshark.ics.cs.cmu.edu:15951
+>wait *
+>check rb02
+Request rb02 yielded expected status 'ok'
+>check rb03
+Request rb03 yielded expected status 'ok'
+>check rb04
+Request rb04 yielded expected status 'ok'
+>check rb05
+Request rb05 yielded expected status 'ok'
+>check rb06
+Request rb06 yielded expected status 'ok'
+>check rb07
+Request rb07 yielded expected status 'ok'
+>check rb08
+Request rb08 yielded expected status 'ok'
+>check rb09
+Request rb09 yielded expected status 'ok'
+>check rb10
+Request rb10 yielded expected status 'ok'
+>delete big-text00.txt
+>delete big-text01.txt
+>delete big-text02.txt
+>delete big-text03.txt
+>delete big-text04.txt
+>delete big-text05.txt
+>delete big-text06.txt
+>delete big-text07.txt
+>delete big-text08.txt
+>delete big-text09.txt
+>delete big-text10.txt
+>quit
+Testing done.  Elapsed time = 9.58 seconds
+ALL TESTS PASSED

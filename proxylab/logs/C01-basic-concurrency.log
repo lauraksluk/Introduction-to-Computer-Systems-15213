@@ -1,0 +1,30 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:6255
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/C01-basic-concurrency.cmd'
+># Test ability to handle out-of-order requests
+>serve s1
+Server s1 running at lemonshark.ics.cs.cmu.edu:20618
+>generate random-text1.txt 2K 
+>generate random-text2.txt 4K 
+>request r1 random-text1.txt s1
+Client: Requesting '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:20618
+>request r2 random-text2.txt s1
+Client: Requesting '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:20618
+>wait *
+># Proxy must have passed request r2 to server
+># even though it has not yet completed r1.
+>respond r2
+Server responded to request r2 with status ok
+>respond r1
+Server responded to request r1 with status ok
+>wait *
+>check r1
+Request r1 yielded expected status 'ok'
+>check r2
+Request r2 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.25 seconds
+ALL TESTS PASSED

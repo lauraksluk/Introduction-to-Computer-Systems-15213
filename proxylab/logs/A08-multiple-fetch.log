@@ -1,0 +1,45 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:22148
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/A08-multiple-fetch.cmd'
+># Test ability to handle multiple fetches
+>serve s1 s2 s3
+Server s1 running at lemonshark.ics.cs.cmu.edu:6751
+Server s2 running at lemonshark.ics.cs.cmu.edu:32395
+Server s3 running at lemonshark.ics.cs.cmu.edu:32235
+>generate random-text1.txt 2K 
+>generate random-text2.txt 4K 
+>generate random-text3.txt 6K
+>generate random-text4.txt 8K
+>generate random-text5.txt 10K
+>generate random-text6.txt 12K
+>fetch f1 random-text1.txt s1
+Client: Fetching '/random-text1.txt' from lemonshark.ics.cs.cmu.edu:6751
+>fetch f2 random-text2.txt s2
+Client: Fetching '/random-text2.txt' from lemonshark.ics.cs.cmu.edu:32395
+>fetch f3 random-text3.txt s3
+Client: Fetching '/random-text3.txt' from lemonshark.ics.cs.cmu.edu:32235
+>fetch f4 random-text4.txt s3
+Client: Fetching '/random-text4.txt' from lemonshark.ics.cs.cmu.edu:32235
+>fetch f5 random-text5.txt s2
+Client: Fetching '/random-text5.txt' from lemonshark.ics.cs.cmu.edu:32395
+>fetch f6 random-text6.txt s1
+Client: Fetching '/random-text6.txt' from lemonshark.ics.cs.cmu.edu:6751
+>wait *
+>check f1
+Request f1 yielded expected status 'ok'
+>check f2
+Request f2 yielded expected status 'ok'
+>check f3
+Request f3 yielded expected status 'ok'
+>check f4
+Request f4 yielded expected status 'ok'
+>check f5
+Request f5 yielded expected status 'ok'
+>check f6
+Request f6 yielded expected status 'ok'
+>quit
+Testing done.  Elapsed time = 2.34 seconds
+ALL TESTS PASSED

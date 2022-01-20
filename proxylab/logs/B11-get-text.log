@@ -1,0 +1,37 @@
+>option timing 1
+>option locking 1
+>option semaphore 1
+>proxy ./proxy
+Proxy set up at lemonshark.ics.cs.cmu.edu:2186
+>source '/afs/andrew.cmu.edu/usr3/kluk/private/15213/proxylab/tests/B11-get-text.cmd'
+># Test ability of proxy to get text data from actual web server
+># Replicas of home pages
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece.html
+Both copies of URL match.  Result in ./get_files/get-001-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece.html
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs.html
+Both copies of URL match.  Result in ./get_files/get-002-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs.html
+># Objects referenced by these pages
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/bootstrap.css
+Both copies of URL match.  Result in ./get_files/get-003-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/bootstrap.css
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/widgets.js
+Both copies of URL match.  Result in ./get_files/get-004-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/widgets.js
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/analytics.js
+Both copies of URL match.  Result in ./get_files/get-005-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/analytics.js
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/font-awesome.css
+Both copies of URL match.  Result in ./get_files/get-006-noproxy.data
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/font-awesome.css
+># Nonexistent URLs.  Should yield status code 404
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/nonexistent.css
+Get of URL with and without proxy returned the same status code: 400
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/ece_files/nonexistent.css
+>get http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/nonexistent.js
+Get of URL with and without proxy returned the same status code: 400
+URL = http://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15213/public/proxylab/scs_files/nonexistent.js
+>quit
+Testing done.  Elapsed time = 5.31 seconds
+ALL TESTS PASSED
